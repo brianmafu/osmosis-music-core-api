@@ -90,11 +90,14 @@ WSGI_APPLICATION = 'osmosis_music_api.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'deoq0a1cp9ohd2',
+        'USER': 'mrtkxtkwyliauh',
+        'PASSWORD': '8992992e9c35f3aa602607e3fc60c8ffacd5d4603dcccc573bc73895df847aae',
+        'HOST': 'ec2-107-20-185-16.compute-1.amazonaws.com',
+        'PORT': '5432',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
