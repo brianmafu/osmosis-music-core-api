@@ -18,4 +18,6 @@ from django.urls import path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/', include(('music_core.api.urls', 'music_core_api'), namespace='music_core_api')),
+
 ]
