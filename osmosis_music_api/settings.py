@@ -26,7 +26,19 @@ SECRET_KEY = 'h7b1w9n!l2)yjr=_ve-l$oo(w8$v!n)m29q!2ne@5s2irk^$9-'
 DEBUG = True
 
 ALLOWED_HOSTS = []
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/2.1/howto/static-files/
+PROJECT_ROOT   =   os.path.join(os.path.abspath(__file__))
+STATIC_ROOT  =   os.path.join(BASE_DIR, 'static')
+STATIC_URL = '/static/'
 
+# Extra lookup directories for collectstatic to find static files
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+
+#  Add configuration for static files storage using whitenoise
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Application definition
 
@@ -116,17 +128,3 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.1/howto/static-files/
-PROJECT_ROOT   =   os.path.join(os.path.abspath(__file__))
-STATIC_ROOT  =   os.path.join(PROJECT_ROOT, 'staticfiles')
-STATIC_URL = '/static/'
-
-# Extra lookup directories for collectstatic to find static files
-STATICFILES_DIRS = (
-    os.path.join(PROJECT_ROOT, 'static'),
-)
-
-#  Add configuration for static files storage using whitenoise
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
