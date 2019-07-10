@@ -168,3 +168,56 @@ class SongUpdateAPIView(RetrieveUpdateAPIView):
     def perform_update(self, serializer):
         serializer.save(user=self.request.user)
 
+
+# Video Views
+
+class VideoListAPIView(ListAPIView):
+    #permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = VideoSerializer
+    pagination_class = LimitOffsetPagination
+
+    def get_queryset(self, *args, **kwargs):
+        queryset_list = Video.objects.all()
+        page_size = 'page_size'
+        if self.request.GET.get(page_size):
+            pagination.PageNumberPagination.page_size = self.request.GET.get(page_size)
+        else:
+            pagination.PageNumberPagination.page_size = 10
+        query = self.request.GET.get('q')
+        if query:
+            queryset_list = queryset_list.filter(
+                Q(email__icontains=query) |
+                Q(title_icontains=query) |
+                Q(name__icontains=query) |
+                Q(phone__icontains=query)
+
+
+            )
+
+        return queryset_list.order_by('-id')
+
+class VideoCreateAPIView(CreateAPIView):
+    serializer_class = VideoSerializer
+    #permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = Video.objects.all()
+
+
+class VideoDetailAPIView(RetrieveAPIView):
+    queryset = Video.objects.all()
+    serializer_class = SongSerializer
+
+
+class VideoDeleteAPIView(DestroyAPIView):
+    queryset = Video.objects.all()
+    #permission_classes = [IsAuthenticated]
+    serializer_class = VideoSerializer
+
+
+class VideoUpdateAPIView(RetrieveUpdateAPIView):
+    #permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = Video.objects.all()
+    serializer_class = VideoSerializer
+
+    def perform_update(self, serializer):
+        serializer.save(user=self.request.user)
+
