@@ -5,10 +5,11 @@ services:
       build:
           context: .
       command: 
-        - python /app/manage.py runserver 0.0.0.0:8000"
+        - bash
       container_name: "osmosisapi"
       ports:
           - 80:8000
       volumes: 
           - .:/app
 
+      entrypoint: bash -c "gunicorn osmosis_music_api.wsgi:application -b :8000 --timeout 300 -w 1 -k gevent"
