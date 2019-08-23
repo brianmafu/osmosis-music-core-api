@@ -1,9 +1,11 @@
 from django.conf.urls import url
 from .views  import (
     ArtistListAPIView, ArtistDetailAPIView, ArtistCreateAPIView, ArtistDeleteAPIView, ArtistUpdateAPIView,
+    AlbumListAPIView, AlbumDetailAPIView, AlbumCreateAPIView, AlbumDeleteAPIView, AlbumUpdateAPIView,
     PlaylistListAPIView, PlaylistDetailAPIView, PlaylistCreateAPIView, PlaylistDeleteAPIView, PlaylistUpdateAPIView,
     SongListAPIView, SongDetailAPIView, SongCreateAPIView, SongDeleteAPIView, SongUpdateAPIView,
     VideoListAPIView, VideoDetailAPIView, VideoCreateAPIView, VideoDeleteAPIView, VideoUpdateAPIView,
+    
 )
 urlpatterns = [
     url(r'^artists', ArtistListAPIView.as_view(), name='Artists'),
@@ -19,10 +21,18 @@ urlpatterns = [
     url(r'^playlist-update/<int:pk>/', PlaylistUpdateAPIView.as_view(), name='Playlist-Update'),
 
     url(r'^songs', SongListAPIView.as_view(), name='Songs'),
-    url(r'^songs-create', SongCreateAPIView.as_view(), name='Song-Create'),
+    url(r'^song-create', SongCreateAPIView.as_view(), name='Song-Create'),
     url(r'^song-datails/<int:pk>/', SongDetailAPIView.as_view(), name='Song-Details'),
     url(r'^song-delete/<int:pk>/', SongDeleteAPIView.as_view(), name='Song-Delete'),
     url(r'^song-update/<int:pk>/', SongUpdateAPIView.as_view(), name='Song-Update'),
+
+
+
+    url(r'^album', AlbumListAPIView.as_view(), name='Albums'),
+    url(r'^album-create', AlbumCreateAPIView.as_view(), name='Album-Create'),
+    url(r'^album-datails/<int:pk>/', AlbumDetailAPIView.as_view(), name='Album-Details'),
+    url(r'^album-delete/<int:pk>/', AlbumDeleteAPIView.as_view(), name='Album-Delete'),
+    url(r'^album-update/<int:pk>/', AlbumUpdateAPIView.as_view(), name='Album-Update'),
 
 
     url(r'^videos', VideoListAPIView.as_view(), name='Videos'),

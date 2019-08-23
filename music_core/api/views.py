@@ -7,8 +7,8 @@ from rest_framework.generics import (
 from django.db.models import Q
 from rest_framework import pagination
 from rest_framework.permissions import (IsAuthenticatedOrReadOnly, IsAuthenticated)
-from  music_core.api.serializers import PlaylistSerializer, ArtistSerializer, SongSerializer, VideoSerializer
-from music_core.models import Artist, Song, Playlist, Video
+from  music_core.api.serializers import PlaylistSerializer, ArtistSerializer, SongSerializer, VideoSerializer, AlbumSerializer
+from music_core.models import Artist, Song, Playlist, Video, Album
 from rest_framework.pagination import LimitOffsetPagination
 
 # Playlist Views
@@ -123,7 +123,7 @@ class SongListAPIView(ListAPIView):
     pagination_class = LimitOffsetPagination
 
     def get_queryset(self, *args, **kwargs):
-        queryset_list = Artist.objects.all()
+        queryset_list = Song.objects.all()
         page_size = 'page_size'
         if self.request.GET.get(page_size):
             pagination.PageNumberPagination.page_size = self.request.GET.get(page_size)
@@ -132,12 +132,8 @@ class SongListAPIView(ListAPIView):
         query = self.request.GET.get('q')
         if query:
             queryset_list = queryset_list.filter(
-                Q(email__icontains=query) |
-                Q(title_icontains=query) |
-                Q(name__icontains=query) |
-                Q(phone__icontains=query)
-
-
+                Q(artist__icontains=query) |
+                Q(title_icontains=query)
             )
 
         return queryset_list.order_by('-id')
@@ -164,6 +160,55 @@ class SongUpdateAPIView(RetrieveUpdateAPIView):
     #permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Song.objects.all()
     serializer_class = SongSerializer
+
+    def perform_update(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+# Album Views
+class AlbumListAPIView(ListAPIView):
+    #permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = AlbumSerializer
+    pagination_class = LimitOffsetPagination
+
+    def get_queryset(self, *args, **kwargs):
+        queryset_list = Album.objects.all()
+        page_size = 'page_size'
+        if self.request.GET.get(page_size):
+            pagination.PageNumberPagination.page_size = self.request.GET.get(page_size)
+        else:
+            pagination.PageNumberPagination.page_size = 10
+        query = self.request.GET.get('q')
+        if query:
+            queryset_list = queryset_list.filter(
+                Q(artist__icontains=query) |
+                Q(title_icontains=query)
+            )
+
+        return queryset_list.order_by('-id')
+
+
+class AlbumCreateAPIView(CreateAPIView):
+    serializer_class = AlbumSerializer
+    #permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = Album.objects.all()
+
+
+class AlbumDetailAPIView(RetrieveAPIView):
+    queryset = Album.objects.all()
+    serializer_class = AlbumSerializer
+
+
+class AlbumDeleteAPIView(DestroyAPIView):
+    queryset = Album.objects.all()
+    #permission_classes = [IsAuthenticated]
+    serializer_class = AlbumSerializer
+
+
+class AlbumUpdateAPIView(RetrieveUpdateAPIView):
+    #permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = Album.objects.all()
+    serializer_class = AlbumSerializer
 
     def perform_update(self, serializer):
         serializer.save(user=self.request.user)

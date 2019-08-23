@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  web:
+      build:
+          context: .
+      command: 
+        - bash
+      container_name: "osmosisapi"
+      ports:
+          - 7001:8000
+      volumes: 
+        - ${PWD}:/app
+
+
+      entrypoint: bash -c "gunicorn osmosis_music_api.wsgi:application -b :8000 --timeout 300 -w 1 -k gevent"

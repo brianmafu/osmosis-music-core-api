@@ -39,11 +39,28 @@ class Artist(models.Model):
     def __str__(self):
         return self.first_name + " " + self.last_name
 
+class Album(models.Model):
+    title = models.CharField(max_length=1000)
+    artist = models.ForeignKey(Artist, blank=True, on_delete=models.PROTECT)
+    location = models.CharField(max_length=1000)
+    thumbnail = models.CharField(max_length=10000)
+    playlist = models.ManyToManyField(Playlist)
+    genre = models.CharField(max_length=50,
+                             choices=GENRE_CHOICES,
+                             default=GENRE_CHOICES[0][0])
+    language = models.CharField(max_length=10,
+                                choices=LANGUAGE_CHOICES,
+                                default=LANGUAGE_CHOICES[0][0])
+    duration = models.IntegerField()
+    def __str__(self):
+        return self.title
+
 
 class Song(models.Model):
     title = models.CharField(max_length=1000)
     artist = models.ForeignKey(Artist, blank=True, on_delete=models.PROTECT)
-    url = models.CharField(max_length=1000)
+    location = models.CharField(max_length=1000)
+    thumbnail = models.CharField(max_length=10000)
     playlist = models.ManyToManyField(Playlist)
     genre = models.CharField(max_length=50,
                              choices=GENRE_CHOICES,
@@ -52,6 +69,8 @@ class Song(models.Model):
                                 choices=LANGUAGE_CHOICES,
                                 default=LANGUAGE_CHOICES[0][0])
 
+    album = models.ForeignKey(Album, blank=True, on_delete=models.PROTECT)
+    duration = models.IntegerField()
     def __str__(self):
         return self.title
 
