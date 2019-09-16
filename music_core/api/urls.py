@@ -4,7 +4,7 @@ from django.urls import path
 
 from .views  import (
     ArtistListAPIView, ArtistDetailAPIView, ArtistCreateAPIView, ArtistDeleteAPIView, ArtistUpdateAPIView,
-    AlbumListAPIView, AlbumDetailAPIView, AlbumCreateAPIView, AlbumDeleteAPIView, AlbumUpdateAPIView,
+    AlbumListAPIView, AlbumDetailAPIView, AlbumCreateAPIView, AlbumDeleteAPIView, AlbumUpdateAPIView,AlbumSearchAPIView,
     PlaylistListAPIView, PlaylistDetailAPIView, PlaylistCreateAPIView, PlaylistDeleteAPIView, PlaylistUpdateAPIView,
     SongListAPIView, SongDetailAPIView, SongCreateAPIView, SongDeleteAPIView, SongUpdateAPIView,
     VideoListAPIView, VideoDetailAPIView, VideoCreateAPIView, VideoDeleteAPIView, VideoUpdateAPIView,
@@ -30,9 +30,9 @@ urlpatterns = [
     path('song-update/<int:pk>/', SongUpdateAPIView.as_view(), name='Song-Update'),
 
 
-
     path('albums', AlbumListAPIView.as_view(), name='Albums'),
-    path('album-create', AlbumCreateAPIView.as_view(), name='Album'),
+    path('albums-search', AlbumSearchAPIView.as_view(), name='Albums-Search'),
+    path('album-create', AlbumCreateAPIView.as_view(), name='Album-Create'),
     path('album-details/<int:pk>/', AlbumDetailAPIView.as_view(), name='Album-Details'),
     path('album-delete/<int:pk>/', AlbumDeleteAPIView.as_view(), name='Album-Delete'),
     path('album-update/<int:pk>/', AlbumUpdateAPIView.as_view(), name='Album-Update'),

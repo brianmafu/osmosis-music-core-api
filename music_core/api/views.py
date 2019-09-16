@@ -187,6 +187,24 @@ class AlbumListAPIView(ListAPIView):
 
         return queryset_list.order_by('-id')
 
+class AlbumSearchAPIView(ListAPIView):
+    serializer_class = AlbumSerializer
+    pagination_class = LimitOffsetPagination
+
+    def get_queryset(self, *args, **kwargs):
+        queryset_list = Album.objects.all()
+        page_size = 'page_size'
+        if self.request.GET.get(page_size):
+            pagination.PageNumberPagination.page_size = self.request.GET.get(page_size)
+        else:
+            pagination.PageNumberPagination.page_size = 10
+        query = self.request.GET.get('q')
+        if query:
+            queryset_list = queryset_list.filter(
+                Q(title__icontains=query)
+            )
+
+        return queryset_list.order_by('-id')
 
 class AlbumCreateAPIView(CreateAPIView):
     serializer_class = AlbumSerializer
