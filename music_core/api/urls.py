@@ -19,13 +19,13 @@ urlpatterns = [
 
     path('playlists', PlaylistListAPIView.as_view(), name='Playlists'),
     path('playlist-create', PlaylistCreateAPIView.as_view(), name='Playlist-Create'),
-    path('playlist-datails/<int:pk>/', PlaylistDetailAPIView.as_view(), name='Playlist-Details'),
+    path('playlist-details/<int:pk>/', PlaylistDetailAPIView.as_view(), name='Playlist-Details'),
     path('playlist-delete/<int:pk>/', PlaylistDeleteAPIView.as_view(), name='Playlist-Delete'),
     path('playlist-update/<int:pk>/', PlaylistUpdateAPIView.as_view(), name='Playlist-Update'),
 
     path('songs', SongListAPIView.as_view(), name='Songs'),
     path('song-create', SongCreateAPIView.as_view(), name='Song-Create'),
-    path('song-datails/<int:pk>/', SongDetailAPIView.as_view(), name='Song-Details'),
+    path('song-details/<int:pk>/', SongDetailAPIView.as_view(), name='Song-Details'),
     path('song-delete/<int:pk>/', SongDeleteAPIView.as_view(), name='Song-Delete'),
     path('song-update/<int:pk>/', SongUpdateAPIView.as_view(), name='Song-Update'),
 
@@ -33,14 +33,14 @@ urlpatterns = [
 
     path('album', AlbumListAPIView.as_view(), name='Albums'),
     path('album-create', AlbumCreateAPIView.as_view(), name='Album'),
-    path('album-datails/<int:pk>/', AlbumDetailAPIView.as_view(), name='Album-Details'),
+    path('album-details/<int:pk>/', AlbumDetailAPIView.as_view(), name='Album-Details'),
     path('album-delete/<int:pk>/', AlbumDeleteAPIView.as_view(), name='Album-Delete'),
     path('album-update/<int:pk>/', AlbumUpdateAPIView.as_view(), name='Album-Update'),
 
 
     path('videos', VideoListAPIView.as_view(), name='Videos'),
     path('video-create', VideoCreateAPIView.as_view(), name='Video-Create'),
-    path('video-datails/<int:pk>/', VideoDetailAPIView.as_view(), name='Video-Details'),
+    path('video-details/<int:pk>/', VideoDetailAPIView.as_view(), name='Video-Details'),
     path('video-delete/<int:pk>/', VideoDeleteAPIView.as_view(), name='Video-Delete'),
     path('video-update/<int:pk>/', VideoUpdateAPIView.as_view(), name='Video-Update'),
 ]
