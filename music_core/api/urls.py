@@ -31,7 +31,7 @@ urlpatterns = [
 
 
 
-    path('album', AlbumListAPIView.as_view(), name='Albums'),
+    path('albums', AlbumListAPIView.as_view(), name='Albums'),
     path('album-create', AlbumCreateAPIView.as_view(), name='Album'),
     path('album-details/<int:pk>/', AlbumDetailAPIView.as_view(), name='Album-Details'),
     path('album-delete/<int:pk>/', AlbumDeleteAPIView.as_view(), name='Album-Delete'),
