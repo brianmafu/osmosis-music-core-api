@@ -6,6 +6,7 @@ class  PlaylistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Playlist
         fields = [
+            'pk',
             'name',
             'cover_art',
         ]
@@ -32,6 +33,7 @@ class  ArtistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Artist
         fields = [
+            'pk',
             'first_name',
             'last_name',
             'image',
@@ -67,12 +69,12 @@ class  SongSerializer(serializers.ModelSerializer):
     class Meta:
         model = Song
         fields = [
+            'pk',
             'title',
             'artist',
             'location',
             'playlist',
             'thumbnail',
-            'location',
             'album',
             'genre',
             'language',
@@ -122,6 +124,7 @@ class  AlbumSerializer(serializers.ModelSerializer):
     class Meta:
         model = Album
         fields = [
+            'pk',
             'title',
             'artist',
             'location',
@@ -176,6 +179,7 @@ class  VideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Video
         fields = [
+            'pk', 
             'title',
             'url',
             'artist',
