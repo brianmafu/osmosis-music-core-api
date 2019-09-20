@@ -64,63 +64,11 @@ class  ArtistSerializer(serializers.ModelSerializer):
         instance.save()
 
 
-# Song Serializer
-class  SongSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Song
-        fields = [
-            'pk',
-            'title',
-            'artist',
-            'location',
-            'playlist',
-            'thumbnail',
-            'album',
-            'genre',
-            'language',
-        ]
-  
-    def create(self, data):
-        title = data['title']
-        artist_id = data['artist_id'] or -1
-        url = data['url']
-        play_list_id = data['play_list_id'] or -1
-        genre = data['genre']
-        language=data['language']
-        thumbnail=data['thumbnail']
-        location=data['location']
-        artist = Artist.objects.filter(id=artist_id)[:1]
-        playlist = Playlist.objects.filter(id=play_list_id)[:1]
-        song = Song(
-            title=title,
-            artist=artist or None,
-            location=location,
-            genre=genre,
-            thumbnail=thumbnail,
-            playlist=playlist or None,
-            language=language
-
-        )
-        song.save()
-        data['id'] =  song.id
-        return data
-
-    def update(self, instance, data):
-        instance.title = data.get('title', instance.title)
-        instance.location = data.get('location', instance.location)
-        instance.language = data.get('language', instance.language)
-        instance.genre = data.get('genre', instance.genre)
-        artist = Artist.objects.filter(id=int(data.get('artist_id', -1)))[:1]
-        album = Album.objects.filter(id=int(data.get('album_id', -1)))[0]
-        playlist = Playlist.objects.filter(id=int(data.get('play_list_id', -1)))[:1]
-        thumbnail = data.get('thumbnail', instance.language)
-        instance.artist = artist or None
-        instance.album = album or None
-        instance.playlist = playlist or None
-        instance.save()
-
 # Album Serializer
 class  AlbumSerializer(serializers.ModelSerializer):
+    artist = ArtistSerializer(many=False, read_only=True)
+    playlist = PlaylistSerializer(many=False, read_only=True)
+
     class Meta:
         model = Album
         fields = [
@@ -174,8 +122,68 @@ class  AlbumSerializer(serializers.ModelSerializer):
         instance.playlist = playlist or None
         instance.save()
 
+
+# Song Serializer
+class  SongSerializer(serializers.ModelSerializer):
+    artist = ArtistSerializer(many=False, read_only=True)
+    album = AlbumSerializer(many=False, read_only=True)
+    class Meta:
+        model = Song
+        fields = [
+            'pk',
+            'title',
+            'artist',
+            'location',
+            'playlist',
+            'thumbnail',
+            'album',
+            'genre',
+            'language',
+        ]
+  
+    def create(self, data):
+        title = data['title']
+        artist_id = data['artist_id'] or -1
+        url = data['url']
+        play_list_id = data['play_list_id'] or -1
+        genre = data['genre']
+        language=data['language']
+        thumbnail=data['thumbnail']
+        location=data['location']
+        artist = Artist.objects.filter(id=artist_id)[:1]
+        playlist = Playlist.objects.filter(id=play_list_id)[:1]
+        song = Song(
+            title=title,
+            artist=artist or None,
+            location=location,
+            genre=genre,
+            thumbnail=thumbnail,
+            playlist=playlist or None,
+            language=language
+
+        )
+        song.save()
+        data['id'] =  song.id
+        return data
+
+    def update(self, instance, data):
+        instance.title = data.get('title', instance.title)
+        instance.location = data.get('location', instance.location)
+        instance.language = data.get('language', instance.language)
+        instance.genre = data.get('genre', instance.genre)
+        artist = Artist.objects.filter(id=int(data.get('artist_id', -1)))[:1]
+        album = Album.objects.filter(id=int(data.get('album_id', -1)))[0]
+        playlist = Playlist.objects.filter(id=int(data.get('play_list_id', -1)))[:1]
+        thumbnail = data.get('thumbnail', instance.language)
+        instance.artist = artist or None
+        instance.album = album or None
+        instance.playlist = playlist or None
+        instance.save()
+
+
 # Video Serializer
 class  VideoSerializer(serializers.ModelSerializer):
+    artist = ArtistSerializer(many=False, read_only=True)
     class Meta:
         model = Video
         fields = [
