@@ -25,7 +25,9 @@ SECRET_KEY = 'h7b1w9n!l2)yjr=_ve-l$oo(w8$v!n)m29q!2ne@5s2irk^$9-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["osmosis-music-api.herokuapp.com", "localhost"]
+ALLOWED_HOSTS = ["osmosis-music-api.herokuapp.com", "localhost", "c07c037b.ngrok.io"]
+ALLOWED_HOSTS = ["*"]
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 PROJECT_ROOT   =   os.path.join(os.path.abspath(__file__))
