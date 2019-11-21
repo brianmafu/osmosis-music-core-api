@@ -38,7 +38,6 @@ class  ArtistSerializer(serializers.ModelSerializer):
             'first_name',
             'last_name',
             'name', 
-            'songs',
             'language',
             'profileImageURL',
             'thumbnailProfileImageURL',
@@ -83,7 +82,6 @@ class  ArtistSerializer(serializers.ModelSerializer):
         instance.thumbnailProfileImageURL = data.get('thumbnailProfileImageURL', instance.thumbnailProfileImageURL)
         instance.stars = data.get('stars', instance.stars)
         instance.about = data.get('about', instance.about)
-        instance.songs = data.get('songs', instance.songs)
         instance.save()
 
 

@@ -3,7 +3,7 @@ from .models import Artist, Song, Playlist, Video, Album
 # Register your models here.
 
 class ArtistAdmin(admin.ModelAdmin):
-    list_display = ('title', 'first_name', 'last_name', 'name', 'language', 'songs', 'profileImageURL', 'thumbnailProfileImageURL', 'about' , 'stars')
+    list_display = ('title', 'first_name', 'last_name', 'name', 'language', 'profileImageURL', 'thumbnailProfileImageURL', 'about' , 'stars')
 
 class SongAdmin(admin.ModelAdmin):
     list_display = ('title', 'artist',  'language', 'album', 'genre', 'imageURL',  'thumbnailImageURL',  'fileName', 'stars', 'duration', 'durationInSeconds')

@@ -33,7 +33,6 @@ class Artist(models.Model):
     first_name = models.CharField(max_length=1000)
     last_name = models.CharField(max_length=1000, blank=True)
     name = models.CharField(max_length=1000, blank=True)
-    songs = models.ManyToManyField(Song)
     profileImageURL = models.CharField(max_length=2000, blank=True)
     thumbnailProfileImageURL = models.CharField(max_length=2000, blank=True)
     about = models.CharField(max_length=3000)
@@ -81,6 +80,8 @@ class Song(models.Model):
     durationInSeconds = models.IntegerField()
     def __str__(self):
         return self.title
+
+
 
 
 class Video(models.Model):
