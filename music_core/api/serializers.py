@@ -88,7 +88,6 @@ class  ArtistSerializer(serializers.ModelSerializer):
 # Album Serializer
 class  AlbumSerializer(serializers.ModelSerializer):
     artist = ArtistSerializer(many=False, read_only=True)
-    playlist = PlaylistSerializer(many=False, read_only=True)
 
     class Meta:
         model = Album
@@ -158,6 +157,7 @@ class  SongSerializer(serializers.ModelSerializer):
             'durationInSeconds',
             'imageURL',
             'thumbnailImageURL',
+            'description',
             'album',
             'genre',
             'language',
@@ -165,18 +165,19 @@ class  SongSerializer(serializers.ModelSerializer):
   
     def create(self, data):
         title = data['title']
-        artist_id = data['artist_id'] or -1
-        genre = data['genre']
+        artist_id=data['artist_id'] or -1
+        genre=data['genre']
         stars = data['stars']
         language=data['language']
         imageURL=data['imageURL']
-        fileName = data['fileName']
+        fileName=data['fileName']
         thumbnailImageURL=data['thumbnailImageURL']
-        album_id = data['album_id'] or -1
-        duration = data['duration']
-        durationInSeconds = data['durationInSeconds']
-        album = Album.objects.filter(id=int(album_id))[0] or None
-        artist = Artist.objects.filter(id=artist_id)[:1]
+        album_id=data['album_id'] or -1
+        duration=data['duration']
+        description=data['description']
+        durationInSeconds=data['durationInSeconds']
+        album=Album.objects.filter(id=int(album_id))[0] or None
+        artist=Artist.objects.filter(id=artist_id)[:1]
         song = Song(
             title=title,
             artist=artist or None,
@@ -187,6 +188,7 @@ class  SongSerializer(serializers.ModelSerializer):
             language=language,
             stars=stars,
             duration=duration,
+            description=description,
             durationInSeconds=durationInSeconds,
             fileName=fileName
         )

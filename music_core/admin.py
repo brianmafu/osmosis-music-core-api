@@ -6,7 +6,7 @@ class ArtistAdmin(admin.ModelAdmin):
     list_display = ('title', 'first_name', 'last_name', 'name', 'language', 'profileImageURL', 'thumbnailProfileImageURL', 'about' , 'stars')
 
 class SongAdmin(admin.ModelAdmin):
-    list_display = ('title', 'artist',  'language', 'album', 'genre', 'imageURL',  'thumbnailImageURL',  'fileName', 'stars', 'duration', 'durationInSeconds')
+    list_display = ('title', 'artist',  'language', 'album', 'description',  'genre', 'imageURL',  'thumbnailImageURL',  'fileName', 'stars', 'duration', 'durationInSeconds')
 
 
 class AlbumAdmin(admin.ModelAdmin):

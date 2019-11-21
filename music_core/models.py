@@ -68,6 +68,7 @@ class Song(models.Model):
     stars = models.IntegerField(default=0)
     imageURL = models.CharField(max_length=10000)
     thumbnailImageURL = models.CharField(max_length=10000)
+    description = models.CharField(max_length=10000)
     genre = models.CharField(max_length=50,
                              choices=GENRE_CHOICES,
                              default=GENRE_CHOICES[0][0])
