@@ -3,14 +3,14 @@ from .models import Artist, Song, Playlist, Video, Album
 # Register your models here.
 
 class ArtistAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'image', 'language' )
+    list_display = ('title', 'first_name', 'last_name', 'name', 'language', 'songs', 'profileImageURL', 'thumbnailProfileImageURL', 'about' , 'stars')
 
 class SongAdmin(admin.ModelAdmin):
-    list_display = ('title', 'artist', 'location', 'language', 'album', 'genre')
+    list_display = ('title', 'artist',  'language', 'album', 'genre', 'imageURL',  'thumbnailImageURL',  'fileName', 'stars', 'duration', 'durationInSeconds')
 
 
 class AlbumAdmin(admin.ModelAdmin):
-    list_display = ('title', 'artist', 'location', 'language',  'genre')
+    list_display = ('title', 'artist', 'thumbnail', 'language',  'genre', 'stars', 'duration')
 
 class PlaylistAdmin(admin.ModelAdmin):
     list_display = ('name', 'cover_art')
@@ -25,4 +25,3 @@ admin.site.register(Playlist, PlaylistAdmin)
 admin.site.register(Video, VideoAdmin)
 admin.site.register(Song, SongAdmin)
 admin.site.register(Album, AlbumAdmin)
-

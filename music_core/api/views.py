@@ -80,10 +80,7 @@ class ArtistListAPIView(ListAPIView):
         query = self.request.GET.get('q')
         if query:
             queryset_list = queryset_list.filter(
-                Q(email__icontains=query) |
-                Q(title_icontains=query) |
-                Q(name__icontains=query) |
-                Q(phone__icontains=query)
+                Q(title_icontains=query) 
 
 
             )

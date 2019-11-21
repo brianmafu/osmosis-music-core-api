@@ -29,9 +29,15 @@ class Playlist(models.Model):
 
 
 class Artist(models.Model):
+    title = models.CharField(max_length=1000)
     first_name = models.CharField(max_length=1000)
     last_name = models.CharField(max_length=1000, blank=True)
-    image = models.CharField(max_length=2000, blank=True)
+    name = models.CharField(max_length=1000, blank=True)
+    songs = models.ManyToManyField(Song)
+    profileImageURL = models.CharField(max_length=2000, blank=True)
+    thumbnailProfileImageURL = models.CharField(max_length=2000, blank=True)
+    about = models.CharField(max_length=3000)
+    stars = models.IntegerField(default=0)
     language = models.CharField(max_length=10,
                                 choices=LANGUAGE_CHOICES,
                                 default=LANGUAGE_CHOICES[0][0])
@@ -42,9 +48,8 @@ class Artist(models.Model):
 class Album(models.Model):
     title = models.CharField(max_length=1000)
     artist = models.ForeignKey(Artist, blank=True, on_delete=models.PROTECT)
-    location = models.CharField(max_length=1000)
     thumbnail = models.CharField(max_length=10000)
-    playlist = models.ManyToManyField(Playlist)
+    stars = models.IntegerField(default=0)
     genre = models.CharField(max_length=50,
                              choices=GENRE_CHOICES,
                              default=GENRE_CHOICES[0][0])
@@ -58,10 +63,12 @@ class Album(models.Model):
 
 class Song(models.Model):
     title = models.CharField(max_length=1000)
+    description = models.CharField(max_length=1000)
     artist = models.ForeignKey(Artist, blank=True, on_delete=models.PROTECT)
-    location = models.CharField(max_length=1000)
-    thumbnail = models.CharField(max_length=10000)
-    playlist = models.ManyToManyField(Playlist)
+    fileName = models.CharField(max_length=1000)
+    stars = models.IntegerField(default=0)
+    imageURL = models.CharField(max_length=10000)
+    thumbnailImageURL = models.CharField(max_length=10000)
     genre = models.CharField(max_length=50,
                              choices=GENRE_CHOICES,
                              default=GENRE_CHOICES[0][0])
@@ -70,13 +77,15 @@ class Song(models.Model):
                                 default=LANGUAGE_CHOICES[0][0])
 
     album = models.ForeignKey(Album, blank=True, on_delete=models.PROTECT)
-    duration = models.IntegerField()
+    duration = models.CharField(max_length=10000)
+    durationInSeconds = models.IntegerField()
     def __str__(self):
         return self.title
 
 
 class Video(models.Model):
     title = models.CharField(max_length=1000)
+    lyrics = models.CharField(max_length=1000)
     artist = models.ForeignKey(Artist, blank=True, on_delete=models.PROTECT)
     url = models.CharField(max_length=1000)
     genre = models.CharField(max_length=50,
