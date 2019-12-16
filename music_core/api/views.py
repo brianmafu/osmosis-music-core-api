@@ -10,6 +10,23 @@ from rest_framework.permissions import (IsAuthenticatedOrReadOnly, IsAuthenticat
 from  music_core.api.serializers import PlaylistSerializer, ArtistSerializer, SongSerializer, VideoSerializer, AlbumSerializer
 from music_core.models import Artist, Song, Playlist, Video, Album
 from rest_framework.pagination import LimitOffsetPagination
+from django.core import serializers
+from django.http import HttpResponse
+import json
+import requests
+
+
+GENRE_CHOICES = (
+    ("Unknown", "Unknown"),
+    ("Movie", "Movie"),
+    ("Pop", "Pop"),
+    ("Rock", "Rock"),
+    ("Alternative/Indie", "Alternative/Indie"),
+    ("Remix", "Remix"),
+    ("Instrumental", "Instrumental"),
+    ("Folk", "Folk"),
+    ("Electronic", "Electronic")
+)
 
 # Playlist Views
 class PlaylistListAPIView(ListAPIView):
@@ -280,4 +297,32 @@ class VideoUpdateAPIView(RetrieveUpdateAPIView):
 
     def perform_update(self, serializer):
         serializer.save(user=self.request.user)
+
+def querySetToJSON(query_set) :
+    all_query_set_objects = json.loads(serializers.serialize('json', query_set))
+    jsonQuerySet = []
+    for objectItem in all_query_set_objects:
+        jsonQuerySet.append(objectItem['fields'])
+    return jsonQuerySet
+
+def getHome(request):
+    trendingArtists = Artist.objects.all()
+    newReleases = Album.objects.all().order_by('date_created')
+    hottestSongs = Song.objects.all()
+    homeData = {
+        "trendingArtists":querySetToJSON(trendingArtists),
+        "newReleases": querySetToJSON(newReleases),
+        "hottestSongs": querySetToJSON(hottestSongs)
+    }
+
+    return HttpResponse(json.dumps(homeData), content_type='application/json')
+
+
+def getGenres(request): 
+    # GENRE_BASE_URL = "http://developer.echonest.com/api/v4/artist/list_genres?api_key=YOUR_API_KEY&format=json"
+    #response = requests.get(GENRE_BASE_URL)
+    
+
+    return HttpResponse(json.dumps([{v[0]: v[1]} for v in GENRE_CHOICES]))
+
 

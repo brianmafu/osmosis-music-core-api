@@ -40,6 +40,8 @@ class Artist(models.Model):
     language = models.CharField(max_length=10,
                                 choices=LANGUAGE_CHOICES,
                                 default=LANGUAGE_CHOICES[0][0])
+    date_created = models.DateTimeField(auto_now_add=True)
+    last_modified = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.first_name + " " + self.last_name
@@ -56,6 +58,8 @@ class Album(models.Model):
                                 choices=LANGUAGE_CHOICES,
                                 default=LANGUAGE_CHOICES[0][0])
     duration = models.IntegerField()
+    date_created = models.DateTimeField(auto_now_add=True)
+    last_modified = models.DateTimeField(auto_now=True)
     def __str__(self):
         return self.title
 
@@ -79,6 +83,8 @@ class Song(models.Model):
     album = models.ForeignKey(Album, blank=True, on_delete=models.PROTECT)
     duration = models.CharField(max_length=10000)
     durationInSeconds = models.IntegerField()
+    date_created = models.DateTimeField(auto_now_add=True)
+    last_modified = models.DateTimeField(auto_now=True)
     def __str__(self):
         return self.title
 

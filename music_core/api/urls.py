@@ -7,10 +7,16 @@ from .views  import (
     AlbumListAPIView, AlbumDetailAPIView, AlbumCreateAPIView, AlbumDeleteAPIView, AlbumUpdateAPIView,AlbumSearchAPIView,
     PlaylistListAPIView, PlaylistDetailAPIView, PlaylistCreateAPIView, PlaylistDeleteAPIView, PlaylistUpdateAPIView,
     SongListAPIView, SongDetailAPIView, SongCreateAPIView, SongDeleteAPIView, SongUpdateAPIView,
-    VideoListAPIView, VideoDetailAPIView, VideoCreateAPIView, VideoDeleteAPIView, VideoUpdateAPIView,
-    
+    VideoListAPIView, VideoDetailAPIView, VideoCreateAPIView, VideoDeleteAPIView, VideoUpdateAPIView, getHome,
+    getGenres
 )
 urlpatterns = [
+
+    # Home Views
+
+    path('home', getHome),
+    path('categories', getGenres),
+
     path('artists', ArtistListAPIView.as_view(), name='Artists'),
     path('artist-create', ArtistCreateAPIView.as_view(), name='Artist-Create'),
     path('artist-details/<int:pk>/', ArtistDetailAPIView.as_view(), name='Artist-Details'),

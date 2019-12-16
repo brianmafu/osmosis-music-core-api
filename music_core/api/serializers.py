@@ -103,18 +103,19 @@ class  AlbumSerializer(serializers.ModelSerializer):
         ]
   
     def create(self, data):
-        title = data['title']
-        artist_id = data['artist_id'] or -1
-        genre = data['genre']
-        language=data['language']
-        stars = data['stars']
-        genre=data['genre']
-        thumbnail=data['thumbnail']
-        duration = data['duration']
-        artist = Artist.objects.filter(id=artist_id)[:1]
+        title = data.get('title', None)
+        artist_id = data.get('artist_id', 1)
+        genre = data.get('genre', "Unknown")
+        print("genre: {}".format(genre))
+        language=data.get('language', None)
+        stars = data.get('stars', 0)
+        thumbnail = data.get('thumbnail', None) 
+        duration = data.get('duration', 0)
+        artist = Artist.objects.filter(id=int(artist_id))
+        artist = artist[0] if artist else None
         album = Album(
             title=title,
-            artist=artist or None,
+            artist=artist,
             genre=genre,
             thumbnail=thumbnail,
             language=language,
@@ -133,8 +134,10 @@ class  AlbumSerializer(serializers.ModelSerializer):
         instance.language = data.get('language', instance.language)
         instance.genre = data.get('genre', instance.genre)
         instance.duration = data.get('duration', instance.duration)
-        artist = Artist.objects.filter(id=int(data.get('artist_id', -1)))[:1]
-        album = Album.objects.filter(id=int(data.get('album_id', -1)))[:1]
+        artist = Artist.objects.filter(id=int(data.get('artist_id', 1)))
+        artist = artist[0] if artist else None
+        album = Album.objects.filter(id=int(data.get('album_id', 1)))
+        album = album[0] if album else None
         thumbnail = data.get('thumbnail', instance.language)
         instance.artist = artist or None
         instance.album = album or None
@@ -164,33 +167,37 @@ class  SongSerializer(serializers.ModelSerializer):
         ]
   
     def create(self, data):
-        title = data['title']
-        artist_id=data['artist_id'] or -1
-        genre=data['genre']
-        stars = data['stars']
-        language=data['language']
-        imageURL=data['imageURL']
-        fileName=data['fileName']
-        thumbnailImageURL=data['thumbnailImageURL']
-        album_id=data['album_id'] or -1
-        duration=data['duration']
-        description=data['description']
-        durationInSeconds=data['durationInSeconds']
-        album=Album.objects.filter(id=int(album_id))[0] or None
-        artist=Artist.objects.filter(id=artist_id)[:1]
+        title = data.get('title', None)
+        artist_id=data.get('artist_id', 1)
+        genre = data.get('genre', "Unknown")
+        print("Genre: {0}".format(genre))
+        stars = data.get('stars', 0)
+        language = data.get('language', None) 
+        imageURL = data.get('imageURL', None)
+        fileName = data.get('fileName', None)
+        thumbnailImageURL = data.get('thumbnailImageURL', None)
+        album_id=data.get('album_id', 1)
+        album=Album.objects.filter(id=int(album_id))
+        album = album[0] if album else None  
+        duration = data.get('duration', 0)
+        description = data.get('description', None)
+        durationInSeconds = data.get('durationInSeconds', 0 )
+        artist = Artist.objects.filter(id=int(artist_id))
+        artist = artist[0] if artist else None  
+
         song = Song(
-            title=title,
-            artist=artist or None,
-            genre=genre,
-            imageURL=imageURL,
-            thumbnailImageURL = thumbnailImageURL,
-            album=album or None,
-            language=language,
-            stars=stars,
-            duration=duration,
-            description=description,
-            durationInSeconds=durationInSeconds,
-            fileName=fileName
+            title = title or None,
+            artist = artist or None,
+            genre = genre or "Unknown",
+            imageURL = imageURL or None,
+            thumbnailImageURL = thumbnailImageURL or None,
+            album = album or None,
+            language = language or None,
+            stars = stars or None,
+            duration = duration or None,
+            description = description or None,
+            durationInSeconds = durationInSeconds or None,
+            fileName = fileName or None
         )
         song.save()
         data['id'] =  song.id
@@ -206,8 +213,10 @@ class  SongSerializer(serializers.ModelSerializer):
         instance.thumbnailImageURL = data.get('thubnailImageURL', instance.thumbnailImageURL)
         instance.stars = data.get('stars', instance.stars)
         instance.genre = data.get('genre', instance.genre)
-        artist = Artist.objects.filter(id=int(data.get('artist_id', -1)))[:1]
-        album = Album.objects.filter(id=int(data.get('album_id', -1)))[0]
+        artist = Artist.objects.filter(id=int(data.get('artist_id', 1)))
+        artist = artist[0] if artist else None
+        album = Album.objects.filter(id=int(data.get('album_id', 1)))
+        album = album[0] if album else None
         instance.artist = artist or None
         instance.album = album or None
         instance.save()
