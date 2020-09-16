@@ -5,7 +5,8 @@ from django.urls import path
 from .views  import (
     ArtistListAPIView, ArtistDetailAPIView, ArtistCreateAPIView, ArtistDeleteAPIView, ArtistUpdateAPIView,
     AlbumListAPIView, AlbumDetailAPIView, AlbumCreateAPIView, AlbumDeleteAPIView, AlbumUpdateAPIView,AlbumSearchAPIView,
-    PlaylistListAPIView, PlaylistDetailAPIView, PlaylistCreateAPIView, PlaylistDeleteAPIView, PlaylistUpdateAPIView,
+    UserPlaylistListAPIView, UserPlaylistDetailAPIView, UserPlaylistCreateAPIView, UserPlaylistDeleteAPIView, UserPlaylistUpdateAPIView,
+    UserPlaylistMusicA
     SongListAPIView, SongDetailAPIView, SongCreateAPIView, SongDeleteAPIView, SongUpdateAPIView,
     VideoListAPIView, VideoDetailAPIView, VideoCreateAPIView, VideoDeleteAPIView, VideoUpdateAPIView, getHome,
     getGenres
@@ -23,11 +24,11 @@ urlpatterns = [
     path('artist-delete/<int:pk>/', ArtistDeleteAPIView.as_view(), name='Artist-Delete'),
     path('artist-update/<int:pk>/', ArtistUpdateAPIView.as_view(), name='Artist-Update'),
 
-    path('playlists', PlaylistListAPIView.as_view(), name='Playlists'),
-    path('playlist-create', PlaylistCreateAPIView.as_view(), name='Playlist-Create'),
-    path('playlist-details/<int:pk>/', PlaylistDetailAPIView.as_view(), name='Playlist-Details'),
-    path('playlist-delete/<int:pk>/', PlaylistDeleteAPIView.as_view(), name='Playlist-Delete'),
-    path('playlist-update/<int:pk>/', PlaylistUpdateAPIView.as_view(), name='Playlist-Update'),
+    path('playlists', UserPlaylistListAPIView.as_view(), name='Playlists'),
+    path('playlist-create', UserPlaylistCreateAPIView.as_view(), name='Playlist-Create'),
+    path('playlist-details/<int:pk>/', UserPlaylistDetailAPIView.as_view(), name='Playlist-Details'),
+    path('playlist-delete/<int:pk>/', UserPlaylistDeleteAPIView.as_view(), name='Playlist-Delete'),
+    path('playlist-update/<int:pk>/', UserPlaylistUpdateAPIView.as_view(), name='Playlist-Update'),
 
     path('songs', SongListAPIView.as_view(), name='Songs'),
     path('song-create', SongCreateAPIView.as_view(), name='Song-Create'),

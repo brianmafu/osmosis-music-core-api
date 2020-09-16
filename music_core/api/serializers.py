@@ -1,21 +1,30 @@
 from rest_framework import serializers
-from music_core.models import Artist, Playlist, Song, Video, Album
+from music_core.models import Artist, UserPlaylist, UserPlaylistMusic, \
+    Song, Video, Album, \
+    UserPaymentMethod, PaymentMethod, \
+    NotificationSettings, PackageSettings
 
 # Playlist Serializer
-class  PlaylistSerializer(serializers.ModelSerializer):
+class  UserPlaylistSerializer(serializers.ModelSerializer):
+    user_playlist_id = serializers.IntegerField(source='pk')
+    user_id = serializers.IntegerField(source='user.id')
+    user_playlist_name = serializers.CharField(source='name')
     class Meta:
-        model = Playlist
+        model = UserPlaylist
         fields = [
             'pk',
             'name',
             'cover_art',
+            'user', 
+            'user_playlist_id',
+            'user_playlist_name'
         ]
   
     def create(self, data):
         name = data['name']
         cover_art = data['cover_art']
 
-        play_list = Playlist(
+        play_list = UserPlaylist(
             name=name,
             cover_art=cover_art,
         )
@@ -28,8 +37,48 @@ class  PlaylistSerializer(serializers.ModelSerializer):
         instance.cover_art = data.get('cover_art', instance.cover_art)
         instance.save()
 
+
+# User Playlist to song assoication
+class  UserPlaylistMusicSerializer(serializers.ModelSerializer):
+    user_playlist_music_id = serializers.IntegerField(source='pk')
+    user_id = serializers.IntegerField(source='user.id')
+    user_playlist_music_name = serializers.CharField(source='name')
+    class Meta:
+        model = UserPlaylistMusic
+        fields = [
+            'pk',
+            'name',
+            'user_playlist_music_id',
+            'user_id',
+            'user_playlist_music_name',
+            'cover_art',
+            'user', 
+            'song',
+        ]
+  
+    def create(self, data):
+        name = data['name']
+        cover_art = data['cover_art']
+
+        play_list = UserPlaylistMusic(
+            name=name,
+            cover_art=cover_art,
+        )
+        play_list.save()
+        data['id'] =  play_list.id
+        return data
+
+    def update(self, instance, data):
+        instance.name = data.get('name', instance.name)
+        instance.cover_art = data.get('cover_art', instance.cover_art)
+        instance.save()
+
+
 # Artist Serializer
 class  ArtistSerializer(serializers.ModelSerializer):
+    artist_id = serializers.IntegerField(source='pk')
+    artist_name = serializers.CharField(source='title')
+    artist_image = serializers.CharField(source='profileImageURL')
     class Meta:
         model = Artist
         fields = [
@@ -40,6 +89,10 @@ class  ArtistSerializer(serializers.ModelSerializer):
             'name', 
             'language',
             'profileImageURL',
+            'artist_name',
+            'artist_image',
+            'artist_id',
+            'artist_status',
             'thumbnailProfileImageURL',
             'about',
             'stars'           
@@ -47,15 +100,16 @@ class  ArtistSerializer(serializers.ModelSerializer):
         ]
   
     def create(self, data):
-        title = data['title']
-        first_name = data['first_name']
-        last_name = data['last_name']
-        language = data['language']
-        name = data['name']
-        profileImageURL = data['profileImageURL']
-        thumbnailProfileImageURL = data['thumbnailProfileImageURL']
-        about = data['about']
-        stars = data['stars']
+        title = data.get('title', None)
+        first_name = data.get('first_name', None)
+        last_name = data.get('last_name', None)
+        language = data.get('language', None)
+        name = data.get('name', None)
+        profileImageURL = data.get('profileImageURL',None)
+        thumbnailProfileImageURL = data.get('thumbnailProfileImageURL',
+        None)
+        about = data.get('about', None)
+        stars = data.get('stars', None)
 
         artist = Artist(
             title=title,
@@ -88,7 +142,10 @@ class  ArtistSerializer(serializers.ModelSerializer):
 # Album Serializer
 class  AlbumSerializer(serializers.ModelSerializer):
     artist = ArtistSerializer(many=False, read_only=True)
-
+    album_id = serializers.IntegerField(source='pk')
+    artist_id = serializers.IntegerField(source='artist.pk')
+    album_name = serializers.CharField(source='title')
+    album_image = serializers.CharField(source='thumbnail')
     class Meta:
         model = Album
         fields = [
@@ -100,19 +157,25 @@ class  AlbumSerializer(serializers.ModelSerializer):
             'language',
             'stars',
             'duration',
+            'album_id',
+            'artist_id',
+            'album_name',
+            'album_image',
+            'album_status',
         ]
   
     def create(self, data):
         title = data.get('title', None)
-        artist_id = data.get('artist_id', 1)
+        artist_id = data.get('artist_id', None)
         genre = data.get('genre', "Unknown")
-        print("genre: {}".format(genre))
         language=data.get('language', None)
         stars = data.get('stars', 0)
         thumbnail = data.get('thumbnail', None) 
         duration = data.get('duration', 0)
-        artist = Artist.objects.filter(id=int(artist_id))
-        artist = artist[0] if artist else None
+        artists = Artist.objects.filter(id=int(artist_id))
+        artist = None
+        if artists:
+            artist = artists[0]
         album = Album(
             title=title,
             artist=artist,
@@ -238,20 +301,23 @@ class  VideoSerializer(serializers.ModelSerializer):
         ]
   
     def create(self, data):
-        title = data['title']
-        url = data['url']
-        genre = data['genre']
-        artist_id = data['artist_id'] or -1
-        artist = Artist.objects.filter(id=int(artist_id))[0]
-        language = data['language']
-        thumbnail = data['thumbnail']
+        title = data.get('title', None)
+        url = data.get('url', None)
+        genre = data.get('genre', None)
+        artist_id = data.get('artist_id', -1)
+        artists = Artist.objects.filter(id=int(artist_id))
+        artist = None
+        if artists:
+            artist = artists[0]
+        language = data.get('language', None)
+        thumbnail = data.get('thumbnail', None)
 
         video = Video(
             title=title,
             url=url,
-            artist=artist,
+            artist=artist or None,
             language=language,
-            image=image
+            image=thumbnail,
         )
         video.save()
         data['id'] =  video.id
@@ -265,4 +331,154 @@ class  VideoSerializer(serializers.ModelSerializer):
         instance.language = data.get('language', instance.language)
         instance.image = data.get('image', instance.image)
         instance.save()
+
+# UserPayment method serializer
+class UserPaymentMethodSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UserPaymentMethod
+        fields = ['__all__']
+
+    def  create(self, data):
+        user_id = data.get('user_id', None)
+        package_id = data.get('package_id' , None)
+        card_name = data.get('card_name',  None)
+        amount = data.get('amount',  None)
+        card_number = data.get('card_number',  None)
+        cvc = data.get('cvc', None)
+        expiration_month = data.get('expiration_month', None)
+        expiration_year = data.get('expiration_year', None)
+        userPaymentMethod = UserPaymentMethod(
+                user_id=user_id,
+                package_id=package_id,
+                card_name=card_name,
+                amount=amount,
+                card_number=card_number,
+                cvc=cvc,
+                expiration_month=expiration_month,
+                expiration_year=expiration_year,
+        )
+        userPaymentMethod.save()
+        userPaymentMethod.user_payment_id = userPaymentMethod.pk
+        userPaymentMethod.save()
+        data['user_payment_id'] =  userPaymentMethod.pk
+        return data
+
+    def update(self, instance, data):
+        instance.user_payment_id = data.get('user_payment_id',
+        instance.user_payment_id)
+        instance.user_id = data.get('user_id',
+        instance.user_id)
+        instance.package_id = data.get('package_id',
+        instance.package_id)
+        instance.card_name = data.get('card_name',
+        instance.card_name)
+        instance.cvc = data.get('cvc',
+        instance.cvc)
+        instance.expiration_month = data.get('expiration_month',
+        instance.expiration_month)
+        instance.expiration_year = data.get('expiration_year',
+        instance.expiration_date)
+        instance.save()
+
+
+# Payment Method options
+class PaymentMethodSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = PaymentMethod
+            fields = ['__all__']
+
+        def create(self, data):
+            payment_method_name = data.get('payment_method_name', None)
+            payment_method_currency = data.get('payment_method_currency', None)
+            payment_method_public_key = data.get('payment_method_public_key', None)
+            payment_method_secret_key = data.get('payment_method_secret_key', None)
+            payment_method_status = data.get('payment_method_status', False)
+            paymentMethod = PaymentMethod(
+                payment_method_name=payment_method_name,
+                payment_method_currency=payment_method_currency,
+                payment_method_public_key=payment_method_public_key,
+                payment_method_secret_key=payment_method_secret_key,
+                payment_method_status=payment_method_status,
+            )
+
+            paymentMethod.save()
+            paymentMethod.payment_method_id = paymentMethod.pk
+            paymentMethod.save()
+            data['payment_method_id'] = paymentMethod.pk
+            return data
+
+        def update(self, instance, data):
+            instance.payment_method_name = data.get('payment_method_name', instance.payment_method_name)
+            instance.payment_method_currency = data.get('payment_method_currency', instance.payment_method_currency)
+            instance.payment_method_public_key = data.get('payment_method_public_key', instance.payment_method_public_key)
+            instance.payment_method_secret_key = data.get('payment_method_secret_key', instance.payment_method_secret_key)
+            instance.payment_method_status = data.get('payment_method_status', instance.payment_method_status)
+            instance.save()
+
+
+# Notification Settings Serializer
+
+class NotificationSettingsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NotificationSettings
+        fields = ['__all__']
+
+    def create(self, data):
+        settings_name = data.get('settings_name', None)
+        settings_value = data.get('settings_value', None)
+        settings_status = data.get('settings_status', True)
+        notificationSettings = NotificationSettings(
+            settings_name=settings_name,
+            settings_value=settings_value,
+            settings_status=settings_status
+        )
+
+        notificationSettings.save()
+        notificationSettings.notification_id = notificationSettings.pk
+        notificationSettings.save()
+
+        data['notification_id'] = notificationSettings.pk
+        return data
+
+
+    def update(self, instance, data):
+        instance.settings_name = data.get('settings_name', instance.settings_name)
+        instance.settings_value = data.get('settings_value', instance.settings_value)
+        instance.settings_status = data.get('settings_status', instance.settings_status)
+        instance.save()
+
+
+# PackageSettings Serializer
+class PackageSettingsSerializer(serializers.ModelSerializer):
+        class Meta:
+            model= PackageSettings
+        def create(self, data):
+            package_name = data.get('package_name', None)
+            package_duration = data.get('package_duration', None)
+            package_price = data.get('package_price', None)
+            package_status = data.get('package_status', True)
+            package_note = data.get('package_note', None)
+            packageSettings = PackageSettings(
+                package_name=package_name,
+                package_duration=package_duration,
+                package_price=package_price,
+                package_status=package_status,
+                package_note=package_note
+            )
+            packageSettings.save()
+            packageSettings.package_id = packageSettings.pk
+            packageSettings.save()
+
+        def update(self, instance, data):
+            instance.package_name = data.get('package_name', instance.package_name)
+            instance.package_duration = data.get('package_duration', instance.package_duration)
+            instance.package_price = data.get('package_price', instance.package_duration)
+            instance.package_status = data.get('package_status', instance.package_status)
+            instance.package_note = data.get('package_note', instance.package_note)
+            instance.save()
+
+
+
+
 

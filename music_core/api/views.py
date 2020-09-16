@@ -7,8 +7,12 @@ from rest_framework.generics import (
 from django.db.models import Q
 from rest_framework import pagination
 from rest_framework.permissions import (IsAuthenticatedOrReadOnly, IsAuthenticated)
-from  music_core.api.serializers import PlaylistSerializer, ArtistSerializer, SongSerializer, VideoSerializer, AlbumSerializer
-from music_core.models import Artist, Song, Playlist, Video, Album
+from  music_core.api.serializers import UserPlaylistSerializer, UserPlaylistMusicSerializer, \
+    ArtistSerializer, SongSerializer, \
+    VideoSerializer, AlbumSerializer, \
+    UserPaymentMethodSerializer, PaymentMethodSerializer, \
+    NotificationSettingsSerializer, PackageSettingsSerializer
+from music_core.models import Artist, Song, UserPlaylist, Video, Album, UserPlaylistMusic, UserPaymentMethod, PaymentMethod, NotificationSettings, PackageSettings
 from rest_framework.pagination import LimitOffsetPagination
 from django.core import serializers
 from django.http import HttpResponse
@@ -29,13 +33,13 @@ GENRE_CHOICES = (
 )
 
 # Playlist Views
-class PlaylistListAPIView(ListAPIView):
+class UserPlaylistListAPIView(ListAPIView):
     #permission_classes = [IsAuthenticatedOrReadOnly]
-    serializer_class = PlaylistSerializer
+    serializer_class = UserPlaylistSerializer
     pagination_class = LimitOffsetPagination
 
     def get_queryset(self, *args, **kwargs):
-        queryset_list = Playlist.objects.all()
+        queryset_list = UserPlaylist.objects.all()
         page_size = 'page_size'
         if self.request.GET.get(page_size):
             pagination.PageNumberPagination.page_size = self.request.GET.get(page_size)
@@ -55,31 +59,156 @@ class PlaylistListAPIView(ListAPIView):
         return queryset_list.order_by('-id')
 
 
-class PlaylistCreateAPIView(CreateAPIView):
-    serializer_class = PlaylistSerializer
+# UserPlaylist View
+class UserPlaylistCreateAPIView(CreateAPIView):
+    serializer_class = UserPlaylistSerializer
     #permission_classes = [IsAuthenticatedOrReadOnly]
-    queryset = Playlist.objects.all()
+    queryset = UserPlaylist.objects.all()
 
 
-class PlaylistDetailAPIView(RetrieveAPIView):
-    queryset = Playlist.objects.all()
-    serializer_class = PlaylistSerializer
+class UserPlaylistDetailAPIView(RetrieveAPIView):
+    queryset = UserPlaylist.objects.all()
+    serializer_class = UserPlaylistSerializer
 
 
-class PlaylistDeleteAPIView(DestroyAPIView):
-    queryset = Playlist.objects.all()
+class UserPlaylistDeleteAPIView(DestroyAPIView):
+    queryset = UserPlaylist.objects.all()
     #permission_classes = [IsAuthenticated]
-    serializer_class = PlaylistSerializer
+    serializer_class = UserPlaylistSerializer
 
 
-class PlaylistUpdateAPIView(RetrieveUpdateAPIView):
+class UserPlaylistUpdateAPIView(RetrieveUpdateAPIView):
     #permission_classes = [IsAuthenticatedOrReadOnly]
-    queryset = Playlist.objects.all()
-    serializer_class = PlaylistSerializer
+    queryset = UserPlaylist.objects.all()
+    serializer_class = UserPlaylistSerializer
 
     def perform_update(self, serializer):
         serializer.save(user=self.request.user)
 
+
+
+# UserPlaylist Music /Song Views
+class UserPlaylistMusicCreateAPIView(CreateAPIView):
+    serializer_class = UserPlaylistMusicSerializer
+    #permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = UserPlaylistMusic.objects.all()
+
+
+class UserPlaylistDetailMusicAPIView(RetrieveAPIView):
+    queryset = UserPlaylistMusic.objects.all()
+    serializer_class = UserPlaylistMusicSerializer
+
+
+class UserPlaylistMusicDeleteAPIView(DestroyAPIView):
+    queryset = UserPlaylistMusic.objects.all()
+    #permission_classes = [IsAuthenticated]
+    serializer_class = UserPlaylistMusicSerializer
+
+
+class UserPlaylistMusicUpdateAPIView(RetrieveUpdateAPIView):
+    #permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = UserPlaylistMusic.objects.all()
+    serializer_class = UserPlaylistMusicSerializer
+
+    def perform_update(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+# UserPaymentMethod views
+class UserPaymentMethodCreateAPIView(CreateAPIView):
+    serializer_class = UserPaymentMethodSerializer
+    #permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = UserPaymentMethod.objects.all()
+
+
+class UserPaymentMethodAPIView(RetrieveAPIView):
+    queryset = UserPaymentMethod.objects.all()
+    serializer_class = UserPaymentMethodSerializer
+
+
+class UserPaymentMethodDeleteAPIView(DestroyAPIView):
+    queryset = UserPaymentMethod.objects.all()
+    #permission_classes = [IsAuthenticated]
+    serializer_class = UserPaymentMethodSerializer
+
+
+# PaymentMethod Option Views
+class PaymentMethodCreateAPIView(CreateAPIView):
+    serializer_class = PaymentMethodSerializer
+    #permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = PaymentMethod.objects.all()
+
+
+class PaymentMethodAPIView(RetrieveAPIView):
+    queryset = PaymentMethod.objects.all()
+    serializer_class = PaymentMethodSerializer
+
+
+class  PaymentMethodDeleteAPIView(DestroyAPIView):
+    queryset = UserPaymentMethod.objects.all()
+    #permission_classes = [IsAuthenticated]
+    serializer_class = PaymentMethodSerializer
+
+# NotificationSettings Views
+class NotificationSettingsCreateAPIView(CreateAPIView):
+    serializer_class = NotificationSettingsSerializer
+    #permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = NotificationSettings.objects.all()
+
+
+class NotificationSettingsAPIView(RetrieveAPIView):
+    queryset = NotificationSettings.objects.all()
+    serializer_class = NotificationSettingsSerializer
+
+
+class  NotificationSettingsDeleteAPIView(DestroyAPIView):
+    queryset = NotificationSettings.objects.all()
+    #permission_classes = [IsAuthenticated]
+    serializer_class = NotificationSettingsSerializer
+
+class NotificationsUpdateAPIView(RetrieveUpdateAPIView):
+    #permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = NotificationSettings.objects.all()
+    serializer_class = NotificationSettingsSerializer
+
+    def perform_update(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+
+#PackageSettings view
+class PackageSettingsCreateAPIView(CreateAPIView):
+    serializer_class = PackageSettingsSerializer
+    #permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = PackageSettings.objects.all()
+
+
+class PackageSettingsAPIView(RetrieveAPIView):
+    queryset = PackageSettings.objects.all()
+    serializer_class = PackageSettingsSerializer
+
+
+class  PackageSettingsDeleteAPIView(DestroyAPIView):
+    queryset = PackageSettings.objects.all()
+    #permission_classes = [IsAuthenticated]
+    serializer_class = PackageSettingsSerializer
+
+class PackageSettingsUpdateAPIView(RetrieveUpdateAPIView):
+    #permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = PackageSettings.objects.all()
+    serializer_class = PackageSettingsSerializer
+
+    def perform_update(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class PackageSettingsUpdateAPIView(RetrieveUpdateAPIView):
+    #permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = PackageSettings.objects.all()
+    serializer_class = PackageSettingsSerializer
+
+    def perform_update(self, serializer):
+        serializer.save(user=self.request.user)
 
 # Artist Views
 class ArtistListAPIView(ListAPIView):

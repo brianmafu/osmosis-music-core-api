@@ -1,27 +1,47 @@
 from django.contrib import admin
-from .models import Artist, Song, Playlist, Video, Album
+from .models import Artist, Song, UserPlaylist, UserPlaylistMusic,  Video, Album, UserPaymentMethod, PaymentMethod,  NotificationSettings, PackageSettings
 # Register your models here.
 
 class ArtistAdmin(admin.ModelAdmin):
-    list_display = ('title', 'first_name', 'last_name', 'name', 'language', 'profileImageURL', 'thumbnailProfileImageURL', 'about' , 'stars')
+    pass
 
 class SongAdmin(admin.ModelAdmin):
-    list_display = ('title', 'artist',  'language', 'album', 'description',  'genre', 'imageURL',  'thumbnailImageURL',  'fileName', 'stars', 'duration', 'durationInSeconds')
+    pass
 
+class UserPaymentMethodAdmin(admin.ModelAdmin):
+    pass
+
+class PaymentMethodAdmin(admin.ModelAdmin):
+    pass
 
 class AlbumAdmin(admin.ModelAdmin):
-    list_display = ('title', 'artist', 'thumbnail', 'language',  'genre', 'stars', 'duration')
+    pass
 
-class PlaylistAdmin(admin.ModelAdmin):
-    list_display = ('name', 'cover_art')
+class UserPlaylistAdmin(admin.ModelAdmin):
+    pass
+
+class UserPlaylistMusicAdmin(admin.ModelAdmin):
+    pass
+
+class NotificationSettingsAdmin(admin.ModelAdmin):
+    pass
+
 
 class VideoAdmin(admin.ModelAdmin):
-    list_display = ('title', 'artist', 'url', 'language', 'genre', 'image')
+    pass
 
+
+class PackageSettingsAdmin(admin.ModelAdmin):
+    pass
 
 
 admin.site.register(Artist, ArtistAdmin)
-admin.site.register(Playlist, PlaylistAdmin)
+admin.site.register(UserPlaylist, UserPlaylistAdmin)
+admin.site.regster(UserPlaylistMusic,UserPlaylistMusicAdmin )
 admin.site.register(Video, VideoAdmin)
 admin.site.register(Song, SongAdmin)
 admin.site.register(Album, AlbumAdmin)
+admin.site.register(UserPaymentMethod, UserPaymentMethodAdmin)
+admin.site.register(PaymentMethod, PaymentMethodAdmin)
+admin.site.register(NotificationSettings, NotificationSettingsAdmin)
+admin.site.register(PackageSettings, PackageSettingsAdmin)
