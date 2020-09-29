@@ -227,8 +227,24 @@ class Category(models.Model):
         db_table = 'category'
 
 
-# Home Compoonents
 
+
+# Settings Flag model
+class SettingsFlag(models.Model):
+    settings_flag_id = models.IntegerField()
+    settings_flag_name = models.CharField(
+        max_length=100,
+    )
+    settings_flag_valye = models.CharField(
+        max_length=10,
+        choices=TYPE_STATUS
+    )
+    created_date = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        db_table = 'settings_flag'
+
+# Home Compoonents
 class HomeComponent(models.Model):
     home_components_id = models.IntegerField()
     home_components_name = models.CharField(max_length=100)
