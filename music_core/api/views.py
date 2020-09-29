@@ -11,8 +11,13 @@ from  music_core.api.serializers import UserPlaylistSerializer, UserPlaylistMusi
     ArtistSerializer, SongSerializer, \
     VideoSerializer, AlbumSerializer, \
     UserPaymentMethodSerializer, PaymentMethodSerializer, \
-    NotificationSettingsSerializer, PackageSettingsSerializer
-from music_core.models import Artist, Song, UserPlaylist, Video, Album, UserPlaylistMusic, UserPaymentMethod, PaymentMethod, NotificationSettings, PackageSettings
+    NotificationSettingsSerializer, PackageSettingsSerializer, \
+    CategorySerializer, HomeComponentSerializer
+from music_core.models import Artist, Song,\
+    UserPlaylist, Video, \
+    Album, UserPlaylistMusic,\
+    UserPaymentMethod, PaymentMethod, \
+    NotificationSettings, PackageSettings, Category, HomeComponent
 from rest_framework.pagination import LimitOffsetPagination
 from django.core import serializers
 from django.http import HttpResponse
@@ -88,13 +93,38 @@ class UserPlaylistUpdateAPIView(RetrieveUpdateAPIView):
 
 
 # UserPlaylist Music /Song Views
+class UserPlaylistMusicListAPIView(ListAPIView):
+    #permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = UserPlaylistMusicSerializer
+    pagination_class = LimitOffsetPagination
+
+    def get_queryset(self, *args, **kwargs):
+        queryset_list = UserPlaylistMusic.objects.all()
+        page_size = 'page_size'
+        if self.request.GET.get(page_size):
+            pagination.PageNumberPagination.page_size = self.request.GET.get(page_size)
+        else:
+            pagination.PageNumberPagination.page_size = 10
+        query = self.request.GET.get('q')
+        if query:
+            queryset_list = queryset_list.filter(
+                Q(email__icontains=query) |
+                Q(title_icontains=query) |
+                Q(name__icontains=query) |
+                Q(phone__icontains=query)
+
+
+            )
+
+        return queryset_list.order_by('-id')
+
 class UserPlaylistMusicCreateAPIView(CreateAPIView):
     serializer_class = UserPlaylistMusicSerializer
     #permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = UserPlaylistMusic.objects.all()
 
 
-class UserPlaylistDetailMusicAPIView(RetrieveAPIView):
+class UserPlaylistMusicDetailAPIView(RetrieveAPIView):
     queryset = UserPlaylistMusic.objects.all()
     serializer_class = UserPlaylistMusicSerializer
 
@@ -114,14 +144,40 @@ class UserPlaylistMusicUpdateAPIView(RetrieveUpdateAPIView):
         serializer.save(user=self.request.user)
 
 
+
 # UserPaymentMethod views
+
+class UserPaymentMethodListAPIView(ListAPIView):
+    #permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = UserPaymentMethodSerializer
+    pagination_class = LimitOffsetPagination
+
+    def get_queryset(self, *args, **kwargs):
+        queryset_list = UserPaymentMethod.objects.all()
+        page_size = 'page_size'
+        if self.request.GET.get(page_size):
+            pagination.PageNumberPagination.page_size = self.request.GET.get(page_size)
+        else:
+            pagination.PageNumberPagination.page_size = 10
+        query = self.request.GET.get('q')
+        if query:
+            queryset_list = queryset_list.filter(
+                Q(email__icontains=query) |
+                Q(title_icontains=query) |
+                Q(name__icontains=query) |
+                Q(phone__icontains=query)
+
+
+            )
+
+        return queryset_list.order_by('-id')
 class UserPaymentMethodCreateAPIView(CreateAPIView):
     serializer_class = UserPaymentMethodSerializer
     #permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = UserPaymentMethod.objects.all()
 
 
-class UserPaymentMethodAPIView(RetrieveAPIView):
+class UserPaymentMethodDetailAPIView(RetrieveAPIView):
     queryset = UserPaymentMethod.objects.all()
     serializer_class = UserPaymentMethodSerializer
 
@@ -133,13 +189,37 @@ class UserPaymentMethodDeleteAPIView(DestroyAPIView):
 
 
 # PaymentMethod Option Views
+class PaymentMethodListAPIView(ListAPIView):
+    #permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = PaymentMethodSerializer
+    pagination_class = LimitOffsetPagination
+
+    def get_queryset(self, *args, **kwargs):
+        queryset_list = PaymentMethod.objects.all()
+        page_size = 'page_size'
+        if self.request.GET.get(page_size):
+            pagination.PageNumberPagination.page_size = self.request.GET.get(page_size)
+        else:
+            pagination.PageNumberPagination.page_size = 10
+        query = self.request.GET.get('q')
+        if query:
+            queryset_list = queryset_list.filter(
+                Q(email__icontains=query) |
+                Q(title_icontains=query) |
+                Q(name__icontains=query) |
+                Q(phone__icontains=query)
+
+
+            )
+
+        return queryset_list.order_by('-id')
 class PaymentMethodCreateAPIView(CreateAPIView):
     serializer_class = PaymentMethodSerializer
     #permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = PaymentMethod.objects.all()
 
 
-class PaymentMethodAPIView(RetrieveAPIView):
+class PaymentMethodDetailAPIView(RetrieveAPIView):
     queryset = PaymentMethod.objects.all()
     serializer_class = PaymentMethodSerializer
 
@@ -149,14 +229,39 @@ class  PaymentMethodDeleteAPIView(DestroyAPIView):
     #permission_classes = [IsAuthenticated]
     serializer_class = PaymentMethodSerializer
 
-# NotificationSettings Views
+
+2# NotificationSettings Views
+class NotificationSettingsListAPIView(ListAPIView):
+    #permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = NotificationSettingsSerializer
+    pagination_class = LimitOffsetPagination
+
+    def get_queryset(self, *args, **kwargs):
+        queryset_list = NotificationSettings.objects.all()
+        page_size = 'page_size'
+        if self.request.GET.get(page_size):
+            pagination.PageNumberPagination.page_size = self.request.GET.get(page_size)
+        else:
+            pagination.PageNumberPagination.page_size = 10
+        query = self.request.GET.get('q')
+        if query:
+            queryset_list = queryset_list.filter(
+                Q(email__icontains=query) |
+                Q(title_icontains=query) |
+                Q(name__icontains=query) |
+                Q(phone__icontains=query)
+
+
+            )
+
+        return queryset_list.order_by('-id')
 class NotificationSettingsCreateAPIView(CreateAPIView):
     serializer_class = NotificationSettingsSerializer
     #permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = NotificationSettings.objects.all()
 
 
-class NotificationSettingsAPIView(RetrieveAPIView):
+class NotificationSettingsDetailAPIView(RetrieveAPIView):
     queryset = NotificationSettings.objects.all()
     serializer_class = NotificationSettingsSerializer
 
@@ -177,6 +282,30 @@ class NotificationsUpdateAPIView(RetrieveUpdateAPIView):
 
 
 #PackageSettings view
+class PackageSettingsListAPIView(ListAPIView):
+    #permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = PackageSettingsSerializer
+    pagination_class = LimitOffsetPagination
+
+    def get_queryset(self, *args, **kwargs):
+        queryset_list = PackageSettings.objects.all()
+        page_size = 'page_size'
+        if self.request.GET.get(page_size):
+            pagination.PageNumberPagination.page_size = self.request.GET.get(page_size)
+        else:
+            pagination.PageNumberPagination.page_size = 10
+        query = self.request.GET.get('q')
+        if query:
+            queryset_list = queryset_list.filter(
+                Q(email__icontains=query) |
+                Q(title_icontains=query) |
+                Q(name__icontains=query) |
+                Q(phone__icontains=query)
+
+
+            )
+
+        return queryset_list.order_by('-id')
 class PackageSettingsCreateAPIView(CreateAPIView):
     serializer_class = PackageSettingsSerializer
     #permission_classes = [IsAuthenticatedOrReadOnly]
@@ -423,6 +552,111 @@ class VideoUpdateAPIView(RetrieveUpdateAPIView):
     #permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Video.objects.all()
     serializer_class = VideoSerializer
+
+    def perform_update(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+# Category Views
+class CategoryListAPIView(ListAPIView):
+    #permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = CategorySerializer
+    pagination_class = LimitOffsetPagination
+
+    def get_queryset(self, *args, **kwargs):
+        queryset_list = Category.objects.all()
+        page_size = 'page_size'
+        if self.request.GET.get(page_size):
+            pagination.PageNumberPagination.page_size = self.request.GET.get(page_size)
+        else:
+            pagination.PageNumberPagination.page_size = 10
+        query = self.request.GET.get('q')
+        if query:
+            queryset_list = queryset_list.filter(
+                Q(email__icontains=query) |
+                Q(title_icontains=query) |
+                Q(name__icontains=query) |
+                Q(phone__icontains=query)
+
+
+            )
+
+        return queryset_list.order_by('-id')
+
+class CategoryCreateAPIView(CreateAPIView):
+    serializer_class = CategorySerializer
+    #permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = Video.objects.all()
+
+
+class CategoryDetailAPIView(RetrieveAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+
+class CategoryDeleteAPIView(DestroyAPIView):
+    queryset = Category.objects.all()
+    #permission_classes = [IsAuthenticated]
+    serializer_class = CategorySerializer
+
+
+class CategoryUpdateAPIView(RetrieveUpdateAPIView):
+    #permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+    def perform_update(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+
+# Home Component Views
+class HomeComponentListAPIView(ListAPIView):
+    #permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = HomeComponentSerializer
+    pagination_class = LimitOffsetPagination
+
+    def get_queryset(self, *args, **kwargs):
+        queryset_list = HomeComponent.objects.all()
+        page_size = 'page_size'
+        if self.request.GET.get(page_size):
+            pagination.PageNumberPagination.page_size = self.request.GET.get(page_size)
+        else:
+            pagination.PageNumberPagination.page_size = 10
+        query = self.request.GET.get('q')
+        if query:
+            queryset_list = queryset_list.filter(
+                Q(email__icontains=query) |
+                Q(title_icontains=query) |
+                Q(name__icontains=query) |
+                Q(phone__icontains=query)
+
+
+            )
+
+        return queryset_list.order_by('-id')
+
+class HomeComponentCreateAPIView(CreateAPIView):
+    serializer_class = CategorySerializer
+    #permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = HomeComponent.objects.all()
+
+
+class HomeComponentDetailAPIView(RetrieveAPIView):
+    queryset = HomeComponent.objects.all()
+    serializer_class = HomeComponentSerializer
+
+
+class HomeComponentDeleteAPIView(DestroyAPIView):
+    queryset = HomeComponent.objects.all()
+    #permission_classes = [IsAuthenticated]
+    serializer_class = HomeComponentSerializer
+
+
+class HomeCompoentUpdateAPIView(RetrieveUpdateAPIView):
+    #permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = HomeComponent.objects.all()
+    serializer_class = HomeComponentSerializer
 
     def perform_update(self, serializer):
         serializer.save(user=self.request.user)

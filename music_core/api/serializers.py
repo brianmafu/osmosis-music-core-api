@@ -2,7 +2,8 @@ from rest_framework import serializers
 from music_core.models import Artist, UserPlaylist, UserPlaylistMusic, \
     Song, Video, Album, \
     UserPaymentMethod, PaymentMethod, \
-    NotificationSettings, PackageSettings
+    NotificationSettings, PackageSettings, \
+    Category, HomeComponent
 
 # Playlist Serializer
 class  UserPlaylistSerializer(serializers.ModelSerializer):
@@ -453,6 +454,8 @@ class NotificationSettingsSerializer(serializers.ModelSerializer):
 class PackageSettingsSerializer(serializers.ModelSerializer):
         class Meta:
             model= PackageSettings
+            fields = ['__all__']
+
         def create(self, data):
             package_name = data.get('package_name', None)
             package_duration = data.get('package_duration', None)
@@ -469,6 +472,8 @@ class PackageSettingsSerializer(serializers.ModelSerializer):
             packageSettings.save()
             packageSettings.package_id = packageSettings.pk
             packageSettings.save()
+            data['package_id'] = packageSettings.package_id
+            return data
 
         def update(self, instance, data):
             instance.package_name = data.get('package_name', instance.package_name)
@@ -477,6 +482,61 @@ class PackageSettingsSerializer(serializers.ModelSerializer):
             instance.package_status = data.get('package_status', instance.package_status)
             instance.package_note = data.get('package_note', instance.package_note)
             instance.save()
+
+# Category Serializer
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model =  Category
+        fields = ['__all__']
+
+    def create(self, data):
+        category_name = data.get("category_name", None)
+        parent_category_id = data.get('parent_category_id', 0)
+        category_status = data.get('category_status', True)
+        category = Category(
+            category_name=category_name,
+            category_status=category_status,
+            parent_category_id=parent_category_id
+        )
+        category.save()
+        category.category_id = category.pk
+        category.save()
+        data['category_id'] = category.pk
+        return data
+
+
+    def update(self, instance, data):
+        instance.category_name = data.get('category_name', instance.category_name)
+        instance.parent_category_id = data.get('parent_category_id', instance.parent_category_id)
+        instance.category_status = data.get('category_status', instance.category_status)
+        instance.save()
+
+#Home Component Serializer
+class HomeComponentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HomeComponent
+        fields = ['__all__']
+
+    def create(self, data):
+        home_components_name = data.get('home_components_name', None)
+        home_components_description = data.get('home_components_description', None)
+        home_components_item_display_count = data.get('home_components_item_display_count')
+        home_components_order = data.get('home_components_order', None)
+        home_components_status = data.get('home_components_status', True)
+        homeComponent = HomeComponent(
+            home_components_name=home_components_name,
+            home_components_item_display_count=home_components_item_display_count,
+            home_components_description=home_components_description,
+            home_components_order=home_components_order,
+            home_components_status=home_components_status
+        )
+
+        homeComponent.save()
+        homeComponent.home_components_id = homeComponent.pk
+        homeComponent.save()
+        data['home_components_id'] = homeComponent.pk
+        return data
+
 
 
 

@@ -6,7 +6,9 @@ from .views  import (
     ArtistListAPIView, ArtistDetailAPIView, ArtistCreateAPIView, ArtistDeleteAPIView, ArtistUpdateAPIView,
     AlbumListAPIView, AlbumDetailAPIView, AlbumCreateAPIView, AlbumDeleteAPIView, AlbumUpdateAPIView,AlbumSearchAPIView,
     UserPlaylistListAPIView, UserPlaylistDetailAPIView, UserPlaylistCreateAPIView, UserPlaylistDeleteAPIView, UserPlaylistUpdateAPIView,
-    UserPlaylistMusicA
+    UserPlaylistMusicListAPIView, UserPlaylistMusicCreateAPIView, UserPlaylistMusicDetailAPIView, UserPlaylistMusicDeleteAPIView, UserPlaylistMusicUpdateAPIView,
+    NotificationSettingsListAPIView, NotificationSettingsCreateAPIView, NotificationSettingsDetailAPIView, NotificationSettingsDeleteAPIView, NotificationsUpdateAPIView,
+    CategoryListAPIView, CategoryCreateAPIView, CategoryDetailAPIView, CategoryDeleteAPIView, CategoryUpdateAPIView,
     SongListAPIView, SongDetailAPIView, SongCreateAPIView, SongDeleteAPIView, SongUpdateAPIView,
     VideoListAPIView, VideoDetailAPIView, VideoCreateAPIView, VideoDeleteAPIView, VideoUpdateAPIView, getHome,
     getGenres
