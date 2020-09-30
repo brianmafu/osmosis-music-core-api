@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Artist, User, Song, UserPlaylist, UserPlaylistMusic,  Video, Album, UserPaymentMethod, PaymentMethod,  NotificationSettings, PackageSettings, Category
+from .models import Artist, User, Song, Admin, UserPlaylist, UserPlaylistMusic,  Video, Album, UserPaymentMethod, PaymentMethod,  NotificationSettings, PackageSettings, Category
 from django.contrib.auth.admin import UserAdmin
 
 class ArtistAdmin(admin.ModelAdmin):
@@ -37,6 +37,9 @@ class PackageSettingsAdmin(admin.ModelAdmin):
 class CategoryAdmin(admin.ModelAdmin):
     pass
 
+class AdminAdmin(admin.ModelAdmin):
+    pass
+
 admin.site.register(Artist, ArtistAdmin)
 admin.site.register(UserPlaylist, UserPlaylistAdmin)
 admin.site.register(UserPlaylistMusic,UserPlaylistMusicAdmin )
@@ -49,3 +52,4 @@ admin.site.register(NotificationSettings, NotificationSettingsAdmin)
 admin.site.register(PackageSettings, PackageSettingsAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(User, UserAdmin)
+admin.site.register(Admin, AdminAdmin)

@@ -153,7 +153,7 @@ class Admin(User):
         db_table = 'admin'
 
 
-
+class 
 
 class Artist(models.Model):
     title = models.CharField(max_length=1000)
