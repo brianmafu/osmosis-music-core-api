@@ -31,7 +31,7 @@ ALIGNMENT_TYPES = (
     (2, "Right"),
 )
 
-
+# General User on System
 class User(AbstractUser):
     user_name = models.CharField(max_length=200)
     user_email = models.CharField(max_length=200)
@@ -47,6 +47,33 @@ class User(AbstractUser):
        return self.id
     class Meta:
         db_table = 'user'
+
+# Admin user
+class Admin(User):
+    
+    # admin properties are base on the base user
+    # marked as super user tho
+    @property
+    def admin_id(self):
+        return self.user_id
+
+    @property
+    def admin_name(self):
+        return self.super.user_name
+
+    @property
+    def admin_email(self):
+        return self.super.user_email
+    @property
+    def admin_username(self):
+        return self.super.user_password
+
+    status = models.CharField(
+        max_length=100,
+        choices=TYPE_STATUS
+    )
+    class Meta:
+        db_table = 'admin'
 class Artist(models.Model):
     title = models.CharField(max_length=1000)
     first_name = models.CharField(max_length=1000)
