@@ -1,7 +1,7 @@
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser
-from django.contrib.auth import get_user_model
-User = get_user_model()
+# from django.contrib.auth import get_user_model
 LANGUAGE_CHOICES = (
     ("English", "English"),
     ("Nepali", "Nepali"),
@@ -31,6 +31,22 @@ ALIGNMENT_TYPES = (
     (2, "Right"),
 )
 
+
+class User(AbstractUser):
+    user_name = models.CharField(max_length=200)
+    user_email = models.CharField(max_length=200)
+    user_phone = models.CharField(max_length=30)
+    user_profile_pic = models.CharField(max_length=100)
+    user_package_id = models.IntegerField(default=0)
+    user_package_paid_date = models.DateTimeField(auto_now=True)
+    user_package_expiry_date = models.DateTimeField(auto_now=True)
+    user_token = models.CharField(max_length=1000)
+    created_date = models.DateTimeField(auto_now_add=True)
+    @property
+    def user_id(self):
+       return self.id
+    class Meta:
+        db_table = 'user'
 class Artist(models.Model):
     title = models.CharField(max_length=1000)
     first_name = models.CharField(max_length=1000)
@@ -46,7 +62,7 @@ class Artist(models.Model):
     language = models.CharField(max_length=10,
                                 choices=LANGUAGE_CHOICES,
                                 default=LANGUAGE_CHOICES[0][0])
-    date_created = models.DateTimeField(auto_now_add=True)
+    created_date = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -70,10 +86,14 @@ class Album(models.Model):
                                 choices=LANGUAGE_CHOICES,
                                 default=LANGUAGE_CHOICES[0][0])
     duration = models.IntegerField()
-    date_created = models.DateTimeField(auto_now_add=True)
+    created_date = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
     def __str__(self):
         return self.title
+
+    # @property 
+    # def artist_id(self):
+    #     return self.artist.id
 
     class Meta:
         db_table = 'album'
@@ -93,6 +113,11 @@ class Video(models.Model):
                                 choices=LANGUAGE_CHOICES,
                                 default=LANGUAGE_CHOICES[0][0])
     image = models.CharField(max_length=100)
+    created_date = models.DateTimeField(auto_now_add=True)
+
+    # @property
+    # def artist_id(self):
+    #     return self.artist.id
 
     def __str__(self):
         return self.title
@@ -115,8 +140,17 @@ class Song(models.Model):
     album = models.ForeignKey(Album, blank=True, on_delete=models.PROTECT)
     duration = models.CharField(max_length=10000)
     durationInSeconds = models.IntegerField()
-    date_created = models.DateTimeField(auto_now_add=True)
+    created_date = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
+
+    # @property
+    # def artist_id(self):
+    #     return self.artist.id
+
+    # @property 
+    # def album_id(self):
+    #     return self.album.id
+
     def __str__(self):
         return self.title
 
@@ -126,9 +160,20 @@ class Song(models.Model):
 
 class UserPlaylist(models.Model):
     name = models.CharField(max_length=1000)
-    user = models.ForeignKey(User, blank=True, on_delete=models.PROTECT)
+    user =  models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
     cover_art = models.CharField(max_length=2000, blank=True)
-    date_created = models.DateTimeField(auto_now_add=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    @property 
+    def user_playlist_id(self):
+        return self.id
+
+    # @property
+    # def user_id(self):
+    #     return self.user.id
+
     class Meta:
         db_table = 'user_playlist'
     def __str__(self):
@@ -136,11 +181,18 @@ class UserPlaylist(models.Model):
 
 class UserPlaylistMusic(models.Model):
     name = models.CharField(max_length=1000)
-    user = models.ForeignKey(User, blank=True, on_delete=models.PROTECT)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
     # called music on the the old api
     song = models.ForeignKey(Song, blank=True, on_delete=models.PROTECT)
     cover_art = models.CharField(max_length=2000, blank=True)
-    date_created = models.DateTimeField(auto_now_add=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+
+    @property 
+    def user_playlist_music_id(self):
+        return self.id
 
     def __str__(self):
         return self.name
@@ -152,7 +204,7 @@ class UserPlaylistMusic(models.Model):
 
 # UserPaymentMethod
 class UserPaymentMethod(models.Model):
-    user_payment_id = models.IntegerField()
+    # user_payment_id = models.IntegerField()
     user_id = models.IntegerField()
     package_id = models.IntegerField()
     card_name = models.CharField(max_length=100)
@@ -163,13 +215,17 @@ class UserPaymentMethod(models.Model):
     expiration_year = models.IntegerField(),
     created_date = models.DateTimeField(auto_now_add=True)
 
+    @property
+    def user_payment_id(self):
+        return self.id
+
     class Meta:
         db_table = 'user_payment'
 
 # PaymentMethod options
 
 class PaymentMethod(models.Model):
-    payment_method_id = models.IntegerField()
+    # payment_method_id = models.IntegerField()
     payment_method_name = models.CharField(max_length=100)
     payment_method_currency = models.CharField(max_length=10)
     payment_method_public_key = models.CharField(max_length=255)
@@ -179,13 +235,17 @@ class PaymentMethod(models.Model):
         choices=TYPE_STATUS)
     created_date = models.DateTimeField(auto_now_add=True)
 
+    @property
+    def payment_method_id(self):
+        return self.id
+
     class Meta:
         db_table = 'payment_method'
 
 
 # Notification Settings
 class NotificationSettings(models.Model):
-    notification_id = models.IntegerField()
+    # notification_id = models.IntegerField()
     settings_name  = models.CharField(max_length=100)
     settings_value = models.CharField(max_length=100)
     settings_status = models.CharField(
@@ -193,6 +253,9 @@ class NotificationSettings(models.Model):
         choices=TYPE_STATUS)
     last_updated =  models.DateTimeField(auto_now=True)
 
+    @property
+    def notification_id(self):
+        return self.id
     class Meta:
         db_table = 'notification_settings'
 
@@ -200,7 +263,7 @@ class NotificationSettings(models.Model):
 #Package settings
 
 class PackageSettings(models.Model):
-    package_id = models.IntegerField()
+    # package_id = models.IntegerField()
     package_name = models.CharField(max_length=1000)
     package_duration = models.CharField(max_length=100)
     package_price = models.CharField(max_length=100)
@@ -210,19 +273,26 @@ class PackageSettings(models.Model):
     package_note = models.TextField()
     created_date = models.DateTimeField(auto_now_add=True)
 
+    @property
+    def package_id(self):
+        return self.id
+
     class Meta:
         db_table = 'package_settings'
 
 #categories/genres
 
 class Category(models.Model):
-    category_id = models.IntegerField()
+    # category_id = models.IntegerField()
     category_name = models.CharField(max_length=100)
     parent_category_id = models.CharField(max_length=11)
     category_status = models.CharField(
         max_length=10,
         choices=TYPE_STATUS)
     created_date = models.DateTimeField(auto_now_add=True)
+    @property
+    def category_id(self):
+        return self.id
     class Meta:
         db_table = 'category'
 
@@ -231,7 +301,7 @@ class Category(models.Model):
 
 # Settings Flag model
 class SettingsFlag(models.Model):
-    settings_flag_id = models.IntegerField()
+    # settings_flag_id = models.IntegerField()
     settings_flag_name = models.CharField(
         max_length=100,
     )
@@ -240,13 +310,15 @@ class SettingsFlag(models.Model):
         choices=TYPE_STATUS
     )
     created_date = models.DateTimeField(auto_now_add=True)
-    
+    @property
+    def settings_flag_id(self):
+        return self.id
     class Meta:
         db_table = 'settings_flag'
 
 # Home Compoonents
 class HomeComponent(models.Model):
-    home_components_id = models.IntegerField()
+    # home_components_id = models.IntegerField()
     home_components_name = models.CharField(max_length=100)
     home_components_description =  models.TextField()
     home_components_item_display_count = models.IntegerField()
@@ -255,13 +327,15 @@ class HomeComponent(models.Model):
         max_length=10,
         choices=TYPE_STATUS)
     created_date = models.DateTimeField(auto_now_add=True)
-
+    @property
+    def home_components_id(self):
+        return self.id
     class Meta:
         db_table = 'home_component'
 
 # Banner Slider
 class BannerSlider(models.Model):
-    banner_slider_id = models.IntegerField()
+    # banner_slider_id = models.IntegerField()
     banner_slider_name = models.CharField(max_length=1000)
     banner_slider_name_alignment = models.CharField(
         max_length=10,
@@ -280,7 +354,9 @@ class BannerSlider(models.Model):
         choices=TYPE_STATUS
     )
     created_date = models.DateTimeField(auto_now_add=True)
-    
+    @property
+    def banner_slider_id(self):
+        return self.id
     class Meta:
         db_table = 'banner_slider'
 

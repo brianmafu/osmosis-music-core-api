@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import Artist, Song, UserPlaylist, UserPlaylistMusic,  Video, Album, UserPaymentMethod, PaymentMethod,  NotificationSettings, PackageSettings, Category
-# Register your models here.
+from .models import Artist, User, Song, UserPlaylist, UserPlaylistMusic,  Video, Album, UserPaymentMethod, PaymentMethod,  NotificationSettings, PackageSettings, Category
+from django.contrib.auth.admin import UserAdmin
 
 class ArtistAdmin(admin.ModelAdmin):
     pass
@@ -37,7 +37,6 @@ class PackageSettingsAdmin(admin.ModelAdmin):
 class CategoryAdmin(admin.ModelAdmin):
     pass
 
-
 admin.site.register(Artist, ArtistAdmin)
 admin.site.register(UserPlaylist, UserPlaylistAdmin)
 admin.site.register(UserPlaylistMusic,UserPlaylistMusicAdmin )
@@ -49,3 +48,4 @@ admin.site.register(PaymentMethod, PaymentMethodAdmin)
 admin.site.register(NotificationSettings, NotificationSettingsAdmin)
 admin.site.register(PackageSettings, PackageSettingsAdmin)
 admin.site.register(Category, CategoryAdmin)
+admin.site.register(User, UserAdmin)
