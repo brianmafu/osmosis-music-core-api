@@ -33,8 +33,6 @@ ALIGNMENT_TYPES = (
 
 # General User on System
 class User(AbstractUser):
-    user_name = models.CharField(max_length=200)
-    user_email = models.CharField(max_length=200)
     user_phone = models.CharField(max_length=30)
     user_profile_pic = models.CharField(max_length=100)
     user_package_id = models.IntegerField(default=0)
@@ -42,9 +40,48 @@ class User(AbstractUser):
     user_package_expiry_date = models.DateTimeField(auto_now=True)
     user_token = models.CharField(max_length=1000)
     created_date = models.DateTimeField(auto_now_add=True)
+    _user_id = models.IntegerField(default=-1)
+    _user_name = models.CharField(max_length=300)
+    _user_email = models.CharField(max_length=100)
+    _user_password = models.CharField(max_length=100)
     @property
     def user_id(self):
        return self.id
+
+    @property
+    def user_name(self):
+        return self.username
+
+    @property
+    def user_email(self):
+        return self.email
+
+    @property
+    def user_password(self):
+        return self.password
+
+    # setters
+
+    @user_id.setter
+    def user_id(self, value):
+        self._user_id = value
+        self.id = value
+
+    @user_name.setter 
+    def user_name(self, value):
+        self._user_name = value
+        self.username = value
+
+    @user_email.setter
+    def user_email(self, value):
+        self._user_email = value
+        self.email = value
+
+    @user_password.setter
+    def user_password(self, value):
+        self.password = value
+        self._user_password = value
+    
     class Meta:
         db_table = 'user'
 
@@ -53,9 +90,24 @@ class Admin(User):
     
     # admin properties are base on the base user
     # marked as super user tho
+    _admin_id = models.IntegerField(default=-1)
+    _admin_name = models.CharField(
+        max_length=200
+    )
+    _admin_email = models.CharField(
+        max_length=200
+    )
+    _admin_username = models.CharField(
+        max_length=30
+    )
+
+    _admin_password = models.CharField(
+        max_length=100
+    )
+    # getters
     @property
     def admin_id(self):
-        return self.user_id
+        return self.super.user_id
 
     @property
     def admin_name(self):
@@ -66,7 +118,32 @@ class Admin(User):
         return self.super.user_email
     @property
     def admin_username(self):
-        return self.super.user_password
+        return self.super.user_name
+
+    @property
+    def admin_password(self):
+        return self.user_password
+    
+    # setters
+    @admin_id.setter
+    def admin_id(self, value):
+        self._admin_id = value
+        self.super.user_id = value
+
+    @admin_name.setter
+    def admin_name(self, value):
+        self._admin_username = value
+        self.super.user_name = value
+
+    @admin_email.setter
+    def admin_email(self, value):
+        self._admin_email = value
+        self.super.user_email = value
+
+    @admin_password.setter
+    def admin_password(self, value):
+        self._admin_password = value
+        self.super.user_password = value
 
     status = models.CharField(
         max_length=100,
@@ -74,6 +151,8 @@ class Admin(User):
     )
     class Meta:
         db_table = 'admin'
+
+
 
 
 class Artist(models.Model):
