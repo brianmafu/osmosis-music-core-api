@@ -74,6 +74,8 @@ class Admin(User):
     )
     class Meta:
         db_table = 'admin'
+
+
 class Artist(models.Model):
     title = models.CharField(max_length=1000)
     first_name = models.CharField(max_length=1000)
@@ -90,7 +92,7 @@ class Artist(models.Model):
                                 choices=LANGUAGE_CHOICES,
                                 default=LANGUAGE_CHOICES[0][0])
     created_date = models.DateTimeField(auto_now_add=True)
-    last_modified = models.DateTimeField(auto_now=True)
+    last_updated = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = 'artist'
@@ -114,7 +116,7 @@ class Album(models.Model):
                                 default=LANGUAGE_CHOICES[0][0])
     duration = models.IntegerField()
     created_date = models.DateTimeField(auto_now_add=True)
-    last_modified = models.DateTimeField(auto_now=True)
+    last_updated = models.DateTimeField(auto_now=True)
     def __str__(self):
         return self.title
 
@@ -168,7 +170,7 @@ class Song(models.Model):
     duration = models.CharField(max_length=10000)
     durationInSeconds = models.IntegerField()
     created_date = models.DateTimeField(auto_now_add=True)
-    last_modified = models.DateTimeField(auto_now=True)
+    last_updated = models.DateTimeField(auto_now=True)
 
     # @property
     # def artist_id(self):
