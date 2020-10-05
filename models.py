@@ -1,15 +1,40 @@
-
+# This is an auto-generated Django model module.
+# You'll have to do the following manually to clean this up:
+#   * Rearrange models' order
+#   * Make sure each model has one field with primary_key=True
+#   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
+#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
+# Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
-from django.contrib.auth.models import AbstractUser
 
+LANGUAGE_CHOICES = (
+    ("English", "English"),
+    ("Nepali", "Nepali"),
+    ("Hindi", "Hindi"),
+    ("Dzongkha", "Dzongkha")
+)
 
-TYPE_STATUS =(
+GENRE_CHOICES = (
+    ("Unknown", "Unknown"),
+    ("Movie", "Movie"),
+    ("Pop", "Pop"),
+    ("Rock", "Rock"),
+    ("Alternative/Indie", "Alternative/Indie"),
+    ("Remix", "Remix"),
+    ("Instrumental", "Instrumental"),
+    ("Folk", "Folk"),
+    ("Electronic", "Electronic")
+)
+TYPE_STATUS = (
     (0, "ENABLE"),
     (1, "DISABLE")
 )
 
-
-
+ALIGNMENT_TYPES = (
+    (0, "Left"),
+    (1, "Center"),
+    (2, "Right"),
+)
 class Admin(models.Model):
     admin_id = models.AutoField(primary_key=True)
     admin_name = models.CharField(max_length=50)
@@ -262,9 +287,9 @@ class SettingsFlag(models.Model):
         db_table = 'settings_flag'
 
 
-class User(AbstractUser):
+class User(models.Model):
     user_id = models.AutoField(primary_key=True)
-    user_name = models.TextField(unique=True)
+    user_name = models.TextField(blank=True, null=True)
     user_email = models.TextField(blank=True, null=True)
     user_password = models.TextField(blank=True, null=True)
     user_phone = models.CharField(max_length=30, blank=True, null=True)
@@ -274,11 +299,6 @@ class User(AbstractUser):
     user_package_expiry_date = models.DateTimeField(blank=True, null=True)
     user_token = models.TextField(blank=True, null=True)
     created_date = models.DateTimeField(auto_now_add=True)
-    # is_anonymous = models.BooleanField()
-    # is_authenticated = models.BooleanField()
-    #
-    # REQUIRED_FIELDS = ('user_id',)
-    # USERNAME_FIELD = 'user_name'
 
     class Meta:
         managed = True
