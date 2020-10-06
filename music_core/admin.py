@@ -40,6 +40,17 @@ class CategoryAdmin(admin.ModelAdmin):
 class AdminAdmin(admin.ModelAdmin):
     pass
 
+class MyUserAdmin(UserAdmin):
+    model = User
+    list_display = ()  # Contain only fields in your `custom-user-model`
+    list_filter = ()  # Contain only fields in your `custom-user-model` intended for filtering. Do not include `groups`since you do not have it
+    search_fields = ()  # Contain only fields in your `custom-user-model` intended for searching
+    ordering = ()  # Contain only fields in your `custom-user-model` intended to ordering
+    filter_horizontal = () # Leave it empty. You have neither `groups` or `user_permissions`
+    fieldsets = UserAdmin.fieldsets + (
+            (None, {'fields': ('__all__',)}),
+    )
+
 admin.site.register(Artist, ArtistAdmin)
 admin.site.register(UserPlaylist, UserPlaylistAdmin)
 admin.site.register(UserPlaylistMusic,UserPlaylistMusicAdmin )
@@ -51,5 +62,5 @@ admin.site.register(PaymentMethod, PaymentMethodAdmin)
 admin.site.register(NotificationSettings, NotificationSettingsAdmin)
 admin.site.register(PackageSettings, PackageSettingsAdmin)
 admin.site.register(Category, CategoryAdmin)
-admin.site.register(User, UserAdmin)
+admin.site.register(User, MyUserAdmin)
 admin.site.register(Admin, AdminAdmin)

@@ -1,13 +1,14 @@
 
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.utils.translation import ugettext_lazy as _
+# from .admin import MyUserAdmin
 
 
 TYPE_STATUS =(
     (0, "ENABLE"),
     (1, "DISABLE")
 )
-
 
 
 class Admin(models.Model):
@@ -261,8 +262,35 @@ class SettingsFlag(models.Model):
         managed = True
         db_table = 'settings_flag'
 
+class UserAccountManager(BaseUserManager):
+        def create_user(self, user_name, password=None):
+            """
+            Creates and saves a User with the given username, date of
+            birth and password.
+            """
+            if not user_name:
+                raise ValueError('Users must have an username')
+            user = self.model(user_name=user_name)
+            user.set_password(password)
+            user.save(using=self._db)
+            return user
 
-class User(AbstractUser):
+
+        def create_superuser(self, user_name, password):
+            """
+            Creates and saves a superuser with the given username and password.
+            """
+            user = self.create_user(
+                user_name=user_name,
+                password=password,
+            )
+            user.is_admin = True
+            user.save(using=self._db)
+            return user
+    # def get_by_natural_key(self, email_):
+    #     return self.get(user_email=email_)
+
+class User(AbstractBaseUser):
     user_id = models.AutoField(primary_key=True)
     user_name = models.TextField(unique=True)
     user_email = models.TextField(blank=True, null=True)
@@ -274,15 +302,80 @@ class User(AbstractUser):
     user_package_expiry_date = models.DateTimeField(blank=True, null=True)
     user_token = models.TextField(blank=True, null=True)
     created_date = models.DateTimeField(auto_now_add=True)
-    # is_anonymous = models.BooleanField()
-    # is_authenticated = models.BooleanField()
+    is_admin = models.BooleanField()
+    last_login = models.DateTimeField()
+    last_name = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=100)
+
+    objects = UserAccountManager()
+    USERNAME_FIELD = 'user_name'
     #
-    # REQUIRED_FIELDS = ('user_id',)
-    # USERNAME_FIELD = 'user_name'
+    # @property
+    # def user_name(self):
+    #     return self.super().username
+    #
+    # @user_name.setter
+    # def user_name(self, value):
+    #     # self.user_name = value
+    #     self.super().username = value
+
+    def get_short_name(self):
+        return self.first_name
+
+    def get_full_name(self):
+        return self.last_name
+
+    def has_perms(self, perm, ob=None):
+        return True
+
+    def has_module_perms(self, app_label):
+        return True
+
+    # def natural_key(self):
+    #     return self.user_name
+
+    @property
+    def is_staff(self):
+        self.is_admin
+
+    @property
+    def is_admin(self):
+        self.super().is_admin
+
+
+    @is_admin.setter
+    def is_admin(self, value):
+        self.super().is_admin = value
+
+    @property
+    def last_login(self):
+        self.last_login
+
+    @property
+    def last_name(self):
+        return self.super().last_name
+
+    @property
+    def first_name(self):
+        return self.super().first_name
+
+
+
+    @property
+    def password(self):
+        return self.user_password
+
+    @password.setter
+    def password(self, value):
+        self.user_password = value
+        # self.password = value
+
+
 
     class Meta:
         managed = True
         db_table = 'user'
+
 
 
 class UserPayment(models.Model):
