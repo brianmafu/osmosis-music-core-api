@@ -285,6 +285,7 @@ class UserAccountManager(BaseUserManager):
             )
             user.is_admin = True
             user.is_staff = True
+            user.is_superuser = True
             user.save(using=self._db)
             admin_user = Admin()
             admin_user.admin_name = user.get_short_name() + " " + user.get_full_name()
@@ -311,6 +312,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     created_date = models.DateTimeField(auto_now_add=True)
     is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+
     last_login = models.DateTimeField(blank=True, null=True)
     last_name = models.CharField(max_length=100)
     first_name = models.CharField(max_length=100)
