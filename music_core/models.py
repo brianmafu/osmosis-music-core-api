@@ -345,7 +345,7 @@ class UserAccountManager(BaseUserManager):
             user.is_superuser = True
             user.save(using=self._db)
             admin_user = Admin()
-            admin_user.admin_name = user.get_short_name() + " " + user.get_full_name()
+            admin_user.admin_name = user_name
             admin_user.admin_password = user.password
             admin_user.admin_username = user_name
             admin_user.save()
