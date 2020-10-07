@@ -309,6 +309,7 @@ class User(AbstractBaseUser):
     user_token = models.TextField(blank=True, null=True)
     created_date = models.DateTimeField(auto_now_add=True)
     is_admin = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
     last_login = models.DateTimeField(blank=True, null=True)
     last_name = models.CharField(max_length=100)
     first_name = models.CharField(max_length=100)
