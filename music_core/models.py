@@ -356,9 +356,7 @@ class UserAccountManager(BaseUserManager):
             packages = PackageSettings.objects.filter(package_name=package_name)
             if packages and packages.count() > 0:
                 package = packages[0]
-                user.user_package_id = package.user_package_id
-                user.user_package_paid_date = package.user_package_paid_date
-                user.user_package_expiry_date = package.user_package_expiry_date
+                user.user_package_id = package.package_id
             user.save(using=self._db)
             return user
 
