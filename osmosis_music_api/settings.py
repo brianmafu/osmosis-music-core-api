@@ -36,7 +36,7 @@ STATIC_URL = '/static/'
 
 PASSWORD_HASHERS = (
     # 'django.contrib.auth.hashers.PBKDF2PasswordHasher',
-    'django.contrib.auth.hashers.MD5PasswordHasher',
+    'django.contrib.auth.hashers.UnsaltedMD5PasswordHasher',
 )
 
 # Extra lookup directories for collectstatic to find static files
