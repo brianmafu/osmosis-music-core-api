@@ -287,7 +287,7 @@ class UserAccountManager(BaseUserManager):
             user.save(using=self._db)
             admin_user = Admin()
             admin_user.admin_name = user.get_short_name() + " " + user.get_full_name()
-            admin_user.admin_password = password
+            admin_user.admin_password = user.password
             admin_user.admin_username = user_name
             admin_user.save()
             user.admin_id = admin_user.pk
@@ -315,15 +315,7 @@ class User(AbstractBaseUser):
 
     objects = UserAccountManager()
     USERNAME_FIELD = 'user_name'
-    #
-    # @property
-    # def user_name(self):
-    #     return self.super().username
-    #
-    # @user_name.setter
-    # def user_name(self, value):
-    #     # self.user_name = value
-    #     self.super().username = value
+
 
     def get_short_name(self):
         return self.first_name
@@ -337,16 +329,14 @@ class User(AbstractBaseUser):
     def has_module_perms(self, app_label):
         return True
 
-    # def natural_key(self):
-    #     return self.user_name
 
-    @property
-    def is_staff(self):
-        self.is_admin
-
-    @property
-    def is_admin(self):
-        return self.is_admin
+    # @property
+    # def is_staff(self):
+    #     self.is_admin
+    #
+    # @property
+    # def is_admin(self):
+    #     return self.is_admin
 
     #
     # @is_admin.setter
