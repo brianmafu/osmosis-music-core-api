@@ -284,15 +284,21 @@ class UserAccountManager(BaseUserManager):
                 user_name=user_name,
                 password=password,
             )
-            user.is_admin = True
+            user.save(using=self._db)
+            admin_user = Admin()
+            admin_user.admin_name = user.get_short_name() + " " + user.get_full_name()
+            admin_user.admin_password = password
+            admin_user.admin_username = user_name
+            admin_user.save()
+            user.admin_id = admin_user.pk
             user.save(using=self._db)
             return user
-    # def get_by_natural_key(self, email_):
-    #     return self.get(user_email=email_)
+
 
 class User(AbstractBaseUser):
     user_id = models.AutoField(primary_key=True)
-    user_name = models.TextField(unique=True)
+    admin_id = models.IntegerField(blank=True, null=True)
+    user_name = models.CharField(max_length=100, unique=True)
     user_email = models.TextField(blank=True, null=True)
     user_password = models.TextField(blank=True, null=True)
     user_phone = models.CharField(max_length=30, blank=True, null=True)
@@ -340,26 +346,33 @@ class User(AbstractBaseUser):
 
     @property
     def is_admin(self):
-        self.super().is_admin
+        return self.is_admin
 
-
-    @is_admin.setter
-    def is_admin(self, value):
-        self.super().is_admin = value
+    #
+    # @is_admin.setter
+    # def is_admin(self, value):
+    #     self.is_admin = value
 
     @property
     def last_login(self):
         self.last_login
 
-    @property
-    def last_name(self):
-        return self.super().last_name
+    # @property
+    # def last_name(self):
+    #     return self.last_name
+    #
+    # @property
+    # def first_name(self):
+    #     return self.first_name
 
-    @property
-    def first_name(self):
-        return self.super().first_name
 
-
+    # @first_name.setter
+    # def first_name(self, value):
+    #     super().first_name = value
+    #
+    # @last_name.setter
+    # def last_name(self, value):
+    #     super().last_name = value
 
     @property
     def password(self):
