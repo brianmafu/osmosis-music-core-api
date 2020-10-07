@@ -1,8 +1,7 @@
 
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-from django.utils.translation import ugettext_lazy as _
-# from .admin import MyUserAdmin
+from django.contrib.auth.models import PermissionsMixin
 
 
 TYPE_STATUS =(
@@ -297,7 +296,7 @@ class UserAccountManager(BaseUserManager):
             return user
 
 
-class User(AbstractBaseUser):
+class User(AbstractBaseUser, PermissionsMixin):
     user_id = models.AutoField(primary_key=True)
     admin_id = models.IntegerField(blank=True, null=True)
     user_name = models.CharField(max_length=100, unique=True)
