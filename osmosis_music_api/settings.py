@@ -34,6 +34,11 @@ PROJECT_ROOT   =   os.path.join(os.path.abspath(__file__))
 STATIC_ROOT  =   os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
+PASSWORD_HASHERS = (
+    # 'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.MD5PasswordHasher',
+)
+
 # Extra lookup directories for collectstatic to find static files
 # STATICFILES_DIRS = (
 #     os.path.join(BASE_DIR, 'static'),
