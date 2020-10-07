@@ -284,6 +284,8 @@ class UserAccountManager(BaseUserManager):
                 user_name=user_name,
                 password=password,
             )
+            user.is_admin = True
+            user.is_staff = True
             user.save(using=self._db)
             admin_user = Admin()
             admin_user.admin_name = user.get_short_name() + " " + user.get_full_name()
