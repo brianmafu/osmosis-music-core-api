@@ -343,6 +343,7 @@ class UserAccountManager(BaseUserManager):
             user.is_admin = True
             user.is_staff = True
             user.is_superuser = True
+
             user.save(using=self._db)
             admin_user = Admin()
             admin_user.admin_name = user_name
@@ -350,6 +351,14 @@ class UserAccountManager(BaseUserManager):
             admin_user.admin_username = user_name
             admin_user.save()
             user.admin_id = admin_user.pk
+            # default package
+            package_name = "Free"
+            packages = PackageSettings.objects.filter(package_name=package_name)
+            if packages and packages.count() > 0:
+                package = packages[0]
+                user.user_package_id = package.user_package_id
+                user.user_package_paid_date = package.user_package_paid_date
+                user.user_package_expiry_date = package.user_package_expiry_date
             user.save(using=self._db)
             return user
 
