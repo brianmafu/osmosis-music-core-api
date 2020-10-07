@@ -16,9 +16,9 @@ class Admin(models.Model):
     admin_email = models.TextField()
     admin_username = models.CharField(max_length=50)
     admin_password = models.TextField()
-    status = models.CharField(
+    status = models.IntegerField(
         choices=TYPE_STATUS,
-        max_length=7
+        default=0
     )
     created_date = models.DateTimeField(auto_now_add=True)
 
@@ -44,9 +44,9 @@ class Album(models.Model):
     artist_id = models.CharField(max_length=100)
     album_name = models.CharField(max_length=100, blank=True, null=True)
     album_image = models.CharField(max_length=100, blank=True, null=True)
-    album_status = models.CharField(
+    album_status = models.IntegerField(
         choices=TYPE_STATUS,
-        max_length=7
+        default=0
     )
     created_date = models.DateTimeField(auto_now_add=True)
 
@@ -81,9 +81,9 @@ class Artist(models.Model):
     artist_id = models.AutoField(primary_key=True)
     artist_name = models.CharField(max_length=100, blank=True, null=True)
     artist_image = models.CharField(max_length=100, blank=True, null=True)
-    artist_status = models.CharField(
+    artist_status = models.IntegerField(
         choices=TYPE_STATUS,
-        max_length=7
+        default=0
     )
     created_date = models.DateTimeField()
 
@@ -101,9 +101,9 @@ class BannerSlider(models.Model):
     banner_slider_button_alignment = models.CharField(max_length=6)
     banner_slider_button_text = models.CharField(max_length=20, blank=True, null=True)
     banner_slider_order = models.IntegerField()
-    banner_slider_status = models.CharField(
+    banner_slider_status =models.IntegerField(
         choices=TYPE_STATUS,
-        max_length=7
+        default=0
     )
     created_date = models.DateTimeField(auto_now_add=True)
 
@@ -116,9 +116,9 @@ class Category(models.Model):
     category_id = models.AutoField(primary_key=True)
     category_name = models.CharField(max_length=100)
     parent_category_id = models.IntegerField()
-    category_status = models.CharField(
+    category_status = models.IntegerField(
         choices=TYPE_STATUS,
-        max_length=7
+        default=0
     )
     created_date = models.DateTimeField(auto_now_add=True)
 
@@ -133,9 +133,9 @@ class HomeComponents(models.Model):
     home_components_description = models.TextField()
     home_components_item_display_count = models.IntegerField(blank=True, null=True)
     home_components_order = models.IntegerField()
-    home_components_status = models.CharField(
+    home_components_status =models.IntegerField(
         choices=TYPE_STATUS,
-        max_length=7
+        default=0
     )
     created_date = models.DateTimeField(auto_now_add=True)
 
@@ -163,9 +163,9 @@ class Movie(models.Model):
     movie_description = models.TextField()
     movie_image = models.CharField(max_length=100)
     movie_year = models.CharField(max_length=10)
-    movie_status = models.CharField(
+    movie_status = models.IntegerField(
         choices=TYPE_STATUS,
-        max_length=7
+        default=0
     )
     created_date = models.DateTimeField(auto_now_add=True)
 
@@ -185,9 +185,9 @@ class Music(models.Model):
     movie_id = models.IntegerField(blank=True, null=True)
     music_size = models.CharField(max_length=50, blank=True, null=True)
     music_duration = models.CharField(max_length=10)
-    music_status = models.CharField(
+    music_status =models.IntegerField(
         choices=TYPE_STATUS,
-        max_length=7
+        default=0
     )
     created_date = models.DateTimeField(auto_now_add=True)
 
@@ -213,9 +213,9 @@ class PackageSettings(models.Model):
     package_name = models.CharField(max_length=1000)
     package_duration = models.CharField(max_length=100)
     package_price = models.CharField(max_length=100)
-    package_status = models.CharField(
+    package_status =models.IntegerField(
         choices=TYPE_STATUS,
-        max_length=7
+        default=0
     )
     package_note = models.TextField(blank=True, null=True)
     created_date = models.DateTimeField(auto_now_add=True)
