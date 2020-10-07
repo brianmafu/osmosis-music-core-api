@@ -22,6 +22,9 @@ class Admin(models.Model):
     )
     created_date = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.admin_name
+
     class Meta:
         managed = True
         db_table = 'admin'
@@ -34,9 +37,14 @@ class AdsSettings(models.Model):
     ads_status = models.CharField(max_length=7)
     last_updated = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.ads_title
+
     class Meta:
         managed = False
         db_table = 'ads_settings'
+
+
 
 
 class Album(models.Model):
@@ -50,6 +58,9 @@ class Album(models.Model):
     )
     created_date = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.album_name
+
     class Meta:
         managed = True
         db_table = 'album'
@@ -62,6 +73,9 @@ class ApiList(models.Model):
     api_type = models.CharField(max_length=30)
     created_date = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.api_name
+
     class Meta:
         managed = True
         db_table = 'api_list'
@@ -71,6 +85,9 @@ class ApiListParameters(models.Model):
     api_list_parameters_id = models.AutoField(primary_key=True)
     api_list_id = models.IntegerField()
     api_list_parameters_name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.api_list_parameters_name
 
     class Meta:
         managed = False
@@ -87,9 +104,15 @@ class Artist(models.Model):
     )
     created_date = models.DateTimeField()
 
+    def __str__(self):
+        return self.artist_name
+
     class Meta:
         managed = False
         db_table = 'artist'
+
+
+
 
 
 class BannerSlider(models.Model):
@@ -105,6 +128,10 @@ class BannerSlider(models.Model):
         choices=TYPE_STATUS,
         default=0
     )
+
+    def __str__(self):
+        return self.banner_slider_name
+
     created_date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -121,6 +148,9 @@ class Category(models.Model):
         default=0
     )
     created_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.category_name
 
     class Meta:
         managed = True
@@ -139,6 +169,9 @@ class HomeComponents(models.Model):
     )
     created_date = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.home_components_name
+
     class Meta:
         managed = True
         db_table = 'home_components'
@@ -151,6 +184,9 @@ class Liked(models.Model):
     like_type_id = models.IntegerField()
     like_date = models.DateField()
     created_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.like_type
 
     class Meta:
         managed = True
@@ -168,6 +204,9 @@ class Movie(models.Model):
         default=0
     )
     created_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.movie_name
 
     class Meta:
         managed = True
@@ -191,6 +230,9 @@ class Music(models.Model):
     )
     created_date = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.music_title
+
     class Meta:
         managed = True
         db_table = 'music'
@@ -202,6 +244,9 @@ class NotificationSettings(models.Model):
     settings_value = models.TextField()
     settings_status = models.CharField(max_length=7)
     last_updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.settings_name
 
     class Meta:
         managed = True
@@ -220,6 +265,9 @@ class PackageSettings(models.Model):
     package_note = models.TextField(blank=True, null=True)
     created_date = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.package_name
+
     class Meta:
         managed = True
         db_table = 'package_settings'
@@ -234,6 +282,9 @@ class PaymentMethod(models.Model):
     payment_method_status = models.CharField(max_length=7)
     created_date = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.payment_method_name
+
     class Meta:
         managed = True
         db_table = 'payment_method'
@@ -246,6 +297,9 @@ class RecentlyView(models.Model):
     user_id = models.IntegerField()
     created_date = models.DateTimeField()
 
+    def __str__(self):
+        return self.recently_view_type
+
     class Meta:
         managed = True
         db_table = 'recently_view'
@@ -256,6 +310,9 @@ class SettingsFlag(models.Model):
     settings_flag_name = models.CharField(max_length=100)
     settings_flag_value = models.CharField(max_length=7)
     created_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.settings_flag_name
 
     class Meta:
         managed = True
@@ -321,6 +378,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserAccountManager()
     USERNAME_FIELD = 'user_name'
 
+    def __str__(self):
+        return self.user_name
 
     def get_short_name(self):
         return self.first_name
@@ -398,6 +457,9 @@ class UserPayment(models.Model):
     expiration_year = models.IntegerField()
     created_date = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.card_name
+
     class Meta:
         managed = True
         db_table = 'user_payment'
@@ -408,6 +470,9 @@ class UserPlaylist(models.Model):
     user_id = models.IntegerField()
     user_playlist_name = models.CharField(max_length=100)
     created_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user_playlist_name
 
     class Meta:
         managed = True
@@ -420,6 +485,11 @@ class UserPlaylistMusic(models.Model):
     user_id = models.IntegerField()
     music_id = models.IntegerField()
     created_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        playlist = UserPlaylist.objects.filter(user_playlist_id=self.user_playlist_id)
+        if playlist and playlist.count() > 0:
+            return playlist[0].user_playlist_name
 
     class Meta:
         managed = True
