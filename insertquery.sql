@@ -82,6 +82,7 @@ INSERT INTO `api_list` (`api_id`, `api_name`, `api_link`, `api_type`, `created_d
 (1, 'Register ', 'API/register', 'POST', '2019-08-06 05:05:38'),
 (3, 'Get All Settings Flag', 'API/register', 'POST', '2019-08-06 05:05:38'),
 (2, 'Login', 'API/login', 'POST', '2019-08-06 05:05:38'),
+
 (4, 'Home Component List', 'API/getCategory', 'POST', '2019-08-06 05:05:38'),
 (5, 'Home', 'API/home', 'POST', '2019-08-06 05:05:38'),
 (6, 'View Single Music Screen', 'API/playMusic', 'POST', '2019-08-06 05:05:38'),
