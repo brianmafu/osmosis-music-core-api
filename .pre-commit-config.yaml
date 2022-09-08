@@ -48,6 +48,7 @@ repos:
     rev: 3.9.2
     hooks:
       - id: flake8
+        args: ["--ignore=Q000,E501,I001,I005"]
         additional_dependencies:
           - flake8-isort
           - flake8-quotes
