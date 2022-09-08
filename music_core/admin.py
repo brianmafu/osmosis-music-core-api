@@ -1,27 +1,50 @@
 from django.contrib import admin
-from .models import Artist, User, Music, Admin, UserPlaylist, UserPlaylistMusic,  Movie, Album, UserPayment, PaymentMethod,  NotificationSettings, PackageSettings, Category
 from django.contrib.auth.admin import UserAdmin
+
+from .models import (
+    Admin,
+    Album,
+    Artist,
+    Category,
+    Movie,
+    Music,
+    NotificationSettings,
+    PackageSettings,
+    PaymentMethod,
+    User,
+    UserPayment,
+    UserPlaylist,
+    UserPlaylistMusic,
+)
+
 
 class ArtistAdmin(admin.ModelAdmin):
     pass
 
+
 class MusicAdmin(admin.ModelAdmin):
     pass
+
 
 class UserPaymentAdmin(admin.ModelAdmin):
     pass
 
+
 class PaymentMethodAdmin(admin.ModelAdmin):
     pass
+
 
 class AlbumAdmin(admin.ModelAdmin):
     pass
 
+
 class UserPlaylistAdmin(admin.ModelAdmin):
     pass
 
+
 class UserPlaylistMusicAdmin(admin.ModelAdmin):
     pass
+
 
 class NotificationSettingsAdmin(admin.ModelAdmin):
     pass
@@ -34,11 +57,14 @@ class MovieAdmin(admin.ModelAdmin):
 class PackageSettingsAdmin(admin.ModelAdmin):
     pass
 
+
 class CategoryAdmin(admin.ModelAdmin):
     pass
 
+
 class AdminAdmin(admin.ModelAdmin):
     pass
+
 
 class MyUserAdmin(UserAdmin):
     model = User
@@ -46,14 +72,13 @@ class MyUserAdmin(UserAdmin):
     list_filter = ()  # Contain only fields in your `custom-user-model` intended for filtering. Do not include `groups`since you do not have it
     search_fields = ()  # Contain only fields in your `custom-user-model` intended for searching
     ordering = ()  # Contain only fields in your `custom-user-model` intended to ordering
-    filter_horizontal = () # Leave it empty. You have neither `groups` or `user_permissions`
-    fieldsets = UserAdmin.fieldsets + (
-            (None, {'fields': ('__all__',)}),
-    )
+    filter_horizontal = ()  # Leave it empty. You have neither `groups` or `user_permissions`
+    fieldsets = UserAdmin.fieldsets + ((None, {"fields": ("__all__",)}),)
+
 
 admin.site.register(Artist, ArtistAdmin)
 admin.site.register(UserPlaylist, UserPlaylistAdmin)
-admin.site.register(UserPlaylistMusic,UserPlaylistMusicAdmin )
+admin.site.register(UserPlaylistMusic, UserPlaylistMusicAdmin)
 admin.site.register(Movie, MovieAdmin)
 admin.site.register(Music, MusicAdmin)
 admin.site.register(Album, AlbumAdmin)

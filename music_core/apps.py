@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class MusicCoreConfig(AppConfig):
-    name = 'music_core'
+    name = "music_core"

@@ -1,13 +1,11 @@
-
-from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-from django.contrib.auth.models import PermissionsMixin
-
-
-TYPE_STATUS =(
-    (0, "ENABLE"),
-    (1, "DISABLE")
+from django.contrib.auth.models import (
+    AbstractBaseUser,
+    BaseUserManager,
+    PermissionsMixin,
 )
+from django.db import models
+
+TYPE_STATUS = ((0, "ENABLE"), (1, "DISABLE"))
 
 
 class Admin(models.Model):
@@ -16,10 +14,7 @@ class Admin(models.Model):
     admin_email = models.TextField()
     admin_username = models.CharField(max_length=50)
     admin_password = models.TextField()
-    status = models.IntegerField(
-        choices=TYPE_STATUS,
-        default=0
-    )
+    status = models.IntegerField(choices=TYPE_STATUS, default=0)
     created_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -27,7 +22,7 @@ class Admin(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'admin'
+        db_table = "admin"
 
 
 class AdsSettings(models.Model):
@@ -42,9 +37,7 @@ class AdsSettings(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'ads_settings'
-
-
+        db_table = "ads_settings"
 
 
 class Album(models.Model):
@@ -52,10 +45,7 @@ class Album(models.Model):
     artist_id = models.CharField(max_length=100)
     album_name = models.CharField(max_length=100, blank=True, null=True)
     album_image = models.CharField(max_length=100, blank=True, null=True)
-    album_status = models.IntegerField(
-        choices=TYPE_STATUS,
-        default=0
-    )
+    album_status = models.IntegerField(choices=TYPE_STATUS, default=0)
     created_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -63,7 +53,7 @@ class Album(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'album'
+        db_table = "album"
 
 
 class ApiList(models.Model):
@@ -78,7 +68,7 @@ class ApiList(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'api_list'
+        db_table = "api_list"
 
 
 class ApiListParameters(models.Model):
@@ -91,17 +81,14 @@ class ApiListParameters(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'api_list_parameters'
+        db_table = "api_list_parameters"
 
 
 class Artist(models.Model):
     artist_id = models.AutoField(primary_key=True)
     artist_name = models.CharField(max_length=100, blank=True, null=True)
     artist_image = models.CharField(max_length=100, blank=True, null=True)
-    artist_status = models.IntegerField(
-        choices=TYPE_STATUS,
-        default=0
-    )
+    artist_status = models.IntegerField(choices=TYPE_STATUS, default=0)
     created_date = models.DateTimeField()
 
     def __str__(self):
@@ -109,10 +96,7 @@ class Artist(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'artist'
-
-
-
+        db_table = "artist"
 
 
 class BannerSlider(models.Model):
@@ -124,10 +108,7 @@ class BannerSlider(models.Model):
     banner_slider_button_alignment = models.CharField(max_length=6)
     banner_slider_button_text = models.CharField(max_length=20, blank=True, null=True)
     banner_slider_order = models.IntegerField()
-    banner_slider_status =models.IntegerField(
-        choices=TYPE_STATUS,
-        default=0
-    )
+    banner_slider_status = models.IntegerField(choices=TYPE_STATUS, default=0)
 
     def __str__(self):
         return self.banner_slider_name
@@ -136,17 +117,14 @@ class BannerSlider(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'banner_slider'
+        db_table = "banner_slider"
 
 
 class Category(models.Model):
     category_id = models.AutoField(primary_key=True)
     category_name = models.CharField(max_length=100)
     parent_category_id = models.IntegerField()
-    category_status = models.IntegerField(
-        choices=TYPE_STATUS,
-        default=0
-    )
+    category_status = models.IntegerField(choices=TYPE_STATUS, default=0)
     created_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -154,7 +132,7 @@ class Category(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'category'
+        db_table = "category"
 
 
 class HomeComponents(models.Model):
@@ -163,10 +141,7 @@ class HomeComponents(models.Model):
     home_components_description = models.TextField()
     home_components_item_display_count = models.IntegerField(blank=True, null=True)
     home_components_order = models.IntegerField()
-    home_components_status =models.IntegerField(
-        choices=TYPE_STATUS,
-        default=0
-    )
+    home_components_status = models.IntegerField(choices=TYPE_STATUS, default=0)
     created_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -174,7 +149,7 @@ class HomeComponents(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'home_components'
+        db_table = "home_components"
 
 
 class Liked(models.Model):
@@ -190,7 +165,7 @@ class Liked(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'liked'
+        db_table = "liked"
 
 
 class Movie(models.Model):
@@ -199,10 +174,7 @@ class Movie(models.Model):
     movie_description = models.TextField()
     movie_image = models.CharField(max_length=100)
     movie_year = models.CharField(max_length=10)
-    movie_status = models.IntegerField(
-        choices=TYPE_STATUS,
-        default=0
-    )
+    movie_status = models.IntegerField(choices=TYPE_STATUS, default=0)
     created_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -210,7 +182,7 @@ class Movie(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'movie'
+        db_table = "movie"
 
 
 class Music(models.Model):
@@ -224,10 +196,7 @@ class Music(models.Model):
     movie_id = models.IntegerField(blank=True, null=True)
     music_size = models.CharField(max_length=50, blank=True, null=True)
     music_duration = models.CharField(max_length=10)
-    music_status =models.IntegerField(
-        choices=TYPE_STATUS,
-        default=0
-    )
+    music_status = models.IntegerField(choices=TYPE_STATUS, default=0)
     created_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -235,7 +204,7 @@ class Music(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'music'
+        db_table = "music"
 
 
 class NotificationSettings(models.Model):
@@ -250,7 +219,7 @@ class NotificationSettings(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'notification_settings'
+        db_table = "notification_settings"
 
 
 class PackageSettings(models.Model):
@@ -258,10 +227,7 @@ class PackageSettings(models.Model):
     package_name = models.CharField(max_length=1000)
     package_duration = models.CharField(max_length=100)
     package_price = models.CharField(max_length=100)
-    package_status =models.IntegerField(
-        choices=TYPE_STATUS,
-        default=0
-    )
+    package_status = models.IntegerField(choices=TYPE_STATUS, default=0)
     package_note = models.TextField(blank=True, null=True)
     created_date = models.DateTimeField(auto_now_add=True)
 
@@ -270,7 +236,7 @@ class PackageSettings(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'package_settings'
+        db_table = "package_settings"
 
 
 class PaymentMethod(models.Model):
@@ -287,7 +253,7 @@ class PaymentMethod(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'payment_method'
+        db_table = "payment_method"
 
 
 class RecentlyView(models.Model):
@@ -302,7 +268,7 @@ class RecentlyView(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'recently_view'
+        db_table = "recently_view"
 
 
 class SettingsFlag(models.Model):
@@ -316,49 +282,49 @@ class SettingsFlag(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'settings_flag'
+        db_table = "settings_flag"
+
 
 class UserAccountManager(BaseUserManager):
-        def create_user(self, user_name, password=None):
-            """
-            Creates and saves a User with the given username, date of
-            birth and password.
-            """
-            if not user_name:
-                raise ValueError('Users must have an username')
-            user = self.model(user_name=user_name)
-            user.set_password(password)
-            user.save(using=self._db)
-            return user
+    def create_user(self, user_name, password=None):
+        """
+        Creates and saves a User with the given username, date of
+        birth and password.
+        """
+        if not user_name:
+            raise ValueError("Users must have an username")
+        user = self.model(user_name=user_name)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
 
+    def create_superuser(self, user_name, password):
+        """
+        Creates and saves a superuser with the given username and password.
+        """
+        user = self.create_user(
+            user_name=user_name,
+            password=password,
+        )
+        user.is_admin = True
+        user.is_staff = True
+        user.is_superuser = True
 
-        def create_superuser(self, user_name, password):
-            """
-            Creates and saves a superuser with the given username and password.
-            """
-            user = self.create_user(
-                user_name=user_name,
-                password=password,
-            )
-            user.is_admin = True
-            user.is_staff = True
-            user.is_superuser = True
-
-            user.save(using=self._db)
-            admin_user = Admin()
-            admin_user.admin_name = user_name
-            admin_user.admin_password = user.password
-            admin_user.admin_username = user_name
-            admin_user.save()
-            user.admin_id = admin_user.pk
-            # default package
-            package_name = "Free"
-            packages = PackageSettings.objects.filter(package_name=package_name)
-            if packages and packages.count() > 0:
-                package = packages[0]
-                user.user_package_id = package.package_id
-            user.save(using=self._db)
-            return user
+        user.save(using=self._db)
+        admin_user = Admin()
+        admin_user.admin_name = user_name
+        admin_user.admin_password = user.password
+        admin_user.admin_username = user_name
+        admin_user.save()
+        user.admin_id = admin_user.pk
+        # default package
+        package_name = "Free"
+        packages = PackageSettings.objects.filter(package_name=package_name)
+        if packages and packages.count() > 0:
+            package = packages[0]
+            user.user_package_id = package.package_id
+        user.save(using=self._db)
+        return user
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -383,7 +349,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=100)
 
     objects = UserAccountManager()
-    USERNAME_FIELD = 'user_name'
+    USERNAME_FIELD = "user_name"
 
     def __str__(self):
         return self.user_name
@@ -399,7 +365,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def has_module_perms(self, app_label):
         return True
-
 
     # @property
     # def is_staff(self):
@@ -426,7 +391,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     # def first_name(self):
     #     return self.first_name
 
-
     # @first_name.setter
     # def first_name(self, value):
     #     super().first_name = value
@@ -444,12 +408,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         self.user_password = value
         # self.password = value
 
-
-
     class Meta:
         managed = True
-        db_table = 'user'
-
+        db_table = "user"
 
 
 class UserPayment(models.Model):
@@ -469,7 +430,7 @@ class UserPayment(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'user_payment'
+        db_table = "user_payment"
 
 
 class UserPlaylist(models.Model):
@@ -483,7 +444,7 @@ class UserPlaylist(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'user_playlist'
+        db_table = "user_playlist"
 
 
 class UserPlaylistMusic(models.Model):
@@ -500,4 +461,4 @@ class UserPlaylistMusic(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'user_playlist_music'
+        db_table = "user_playlist_music"
