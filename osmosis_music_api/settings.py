@@ -59,7 +59,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_generators',
     'music_core',
-    # 'music_core.api',
 ]
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
@@ -115,23 +114,23 @@ WSGI_APPLICATION = 'osmosis_music_api.wsgi.application'
 # host: eu-cdbr-west-03.cleardb.net
 # username: b507d3c2ca5ac6
 # password: 611e94fa
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'heroku_30e197750ea1943',
-        'USER': 'b507d3c2ca5ac6',
-        'PASSWORD': '611e94fa',
-        'HOST': 'eu-cdbr-west-03.cleardb.net',
-        'PORT': '3306',
-    }
-}
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'DatabaseName.db'),
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'heroku_30e197750ea1943',
+#         'USER': 'b507d3c2ca5ac6',
+#         'PASSWORD': '611e94fa',
+#         'HOST': 'eu-cdbr-west-03.cleardb.net',
+#         'PORT': '3306',
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'DatabaseName.db'),
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
