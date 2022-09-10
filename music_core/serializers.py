@@ -1,28 +1,11 @@
 from rest_framework.serializers import ModelSerializer
 
-from music_core.models import (
-    Admin,
-    AdsSettings,
-    Album,
-    ApiList,
-    ApiListParameters,
-    Artist,
-    BannerSlider,
-    Category,
-    HomeComponents,
-    Liked,
-    Movie,
-    Music,
-    NotificationSettings,
-    PackageSettings,
-    PaymentMethod,
-    RecentlyView,
-    SettingsFlag,
-    User,
-    UserPayment,
-    UserPlaylist,
-    UserPlaylistMusic,
-)
+from music_core.models import (Admin, AdsSettings, Album, ApiList,
+                               ApiListParameters, Artist, BannerSlider,
+                               Category, HomeComponents, Liked, Movie, Music,
+                               NotificationSettings, PackageSettings,
+                               PaymentMethod, RecentlyView, SettingsFlag, User,
+                               UserPayment, UserPlaylist, UserPlaylistMusic)
 
 
 class AdminSerializer(ModelSerializer):

@@ -1,21 +1,9 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .models import (
-    Admin,
-    Album,
-    Artist,
-    Category,
-    Movie,
-    Music,
-    NotificationSettings,
-    PackageSettings,
-    PaymentMethod,
-    User,
-    UserPayment,
-    UserPlaylist,
-    UserPlaylistMusic,
-)
+from .models import (Admin, Album, Artist, Category, Movie, Music,
+                     NotificationSettings, PackageSettings, PaymentMethod,
+                     User, UserPayment, UserPlaylist, UserPlaylistMusic)
 
 
 class ArtistAdmin(admin.ModelAdmin):
